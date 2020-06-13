@@ -30,3 +30,14 @@
 *.exe
 *.out
 *.app
+
+# Archives
+*.zip
+*.tar
+*.gz
+
+# Python env
+env
+
+# IDE related
+.idea
