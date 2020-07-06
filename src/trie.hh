@@ -1,20 +1,16 @@
-class Trie
+#pragma once
+
+#include<map>
+
+using namespace std;
+
+struct TrieNode
 {
-public:
-    bool isLeaf;
-    Trie* character[CHAR_SIZE];
-
-    // Constructor
-    Trie()
+    map<char,TrieNode*> children;
+    bool endofword;
+    TrieNode()
     {
-        this->isLeaf = false;
-
-        for (int i = 0; i < CHAR_SIZE; i++)
-            this->character[i] = nullptr;
+        endofword=false;
     }
-
-    void insert(std::string);
-    bool deletion(Trie*&, std::string);
-    bool search(std::string);
-    bool haveChildren(Trie const*);
 };
+

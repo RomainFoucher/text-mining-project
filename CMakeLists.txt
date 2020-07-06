@@ -21,6 +21,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -fno-inline -fno-builtin
 add_executable(TextMiningCompiler)
 target_sources(TextMiningCompiler PRIVATE
         src/compiler/main.cc
+        src/trie.cc
         )
 target_include_directories(TextMiningCompiler PRIVATE
         src)
@@ -33,6 +34,7 @@ target_compile_options(TextMiningCompiler PRIVATE
 add_executable(TextMiningApp)
 target_sources(TextMiningApp PRIVATE
         src/app/main.cc
+        src/trie.cc
         )
 target_include_directories(TextMiningApp PRIVATE
         src)
