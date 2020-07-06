@@ -7,7 +7,7 @@
 #include<algorithm>
 #include<cmath>
 
-void insert(TrieNode *root,const string& word)
+void insert(TrieNode *root, const string& word)
 {
     TrieNode *current=root;
     for(const char& i : word)
@@ -35,4 +35,13 @@ bool search(TrieNode *root,const string& word)
         current=node;
     }
     return current->endofword;
+}
+
+void destroy(TrieNode * root)
+{
+    for(const auto& i : root->children)
+    {
+        destroy(i.second);
+    }
+    delete(root);
 }
