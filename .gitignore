@@ -2,6 +2,11 @@
 ref/
 words.txt
 
+# CMake
+cmake-build-debug/
+debug/
+release/
+
 # Prerequisites
 *.d
 
