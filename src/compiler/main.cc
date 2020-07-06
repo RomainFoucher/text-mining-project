@@ -1,4 +1,4 @@
-#include "../trie.hh"
+#include "trie.hh"
 
 int main(void)
 {
