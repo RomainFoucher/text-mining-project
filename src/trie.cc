@@ -20,6 +20,7 @@ void insert(TrieNode *root, const string& word)
             current->children[i]=node;
         }
         current=node;
+        current->prefixes++;
     }
     current->endofword=true;
 }

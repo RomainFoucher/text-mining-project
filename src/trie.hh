@@ -11,9 +11,11 @@ struct TrieNode
 {
     map<char,TrieNode*> children;
     bool endofword;
+    int prefixes;
     TrieNode()
     {
         endofword=false;
+        prefixes=0;
     }
 };
 
