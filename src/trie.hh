@@ -1,8 +1,11 @@
 #pragma once
 
 #include <map>
+#include <string>
 
-using namespace std;
+namespace {
+    using namespace std;
+}
 
 struct TrieNode
 {
@@ -14,8 +17,8 @@ struct TrieNode
     }
 };
 
-void insert(TrieNode *root,const string& word);
+void insert(TrieNode *root, const string& word);
 
-bool search(TrieNode *root,const string& word);
+bool search(TrieNode *root, const string& word);
 
 void destroy(TrieNode * root);

@@ -25,9 +25,11 @@ target_compile_options(Trie PRIVATE
 # First executable
 add_executable(TextMiningCompiler)
 target_sources(TextMiningCompiler PRIVATE
-        src/compiler/main.cc)
+        src/compiler/main.cc
+        src/compiler/parser.cc)
 target_include_directories(TextMiningCompiler PRIVATE
-        src)
+        src
+        src/compiler)
 target_link_libraries(TextMiningCompiler PRIVATE
         Trie)
 target_compile_options(TextMiningCompiler PRIVATE
