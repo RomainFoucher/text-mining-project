@@ -5,4 +5,4 @@
 #include <iostream>
 #include <fstream>
 
-struct TrieNode *get_trie_from_file(std::ifstream);
+struct TrieNode *get_trie_from_file(std::ifstream&);

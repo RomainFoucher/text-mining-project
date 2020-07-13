@@ -10,13 +10,9 @@ namespace {
 struct TrieNode
 {
     map<char,TrieNode*> children;
-    bool endofword;
-    int prefixes;
-    TrieNode()
-    {
-        endofword=false;
-        prefixes=0;
-    }
+    bool endofword = false;
+    int prefixes = 0;
+    TrieNode() = default;
 };
 
 void insert(TrieNode *root, const string& word);
