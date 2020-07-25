@@ -50,17 +50,3 @@ target_link_libraries(TextMiningApp PRIVATE
         Common)
 target_compile_options(TextMiningApp PRIVATE
         -Wall -Wextra -pedantic)
-
-
-# NOT USED
-
-# Static lib
-add_library(Lib STATIC)
-target_sources(Lib PRIVATE
-        lib/contract.cc
-        lib/indent.cc
-        lib/indent.hh)
-target_include_directories(Lib PRIVATE
-        lib)
-target_compile_options(Lib PRIVATE
-        -Wall -Wextra -pedantic)
