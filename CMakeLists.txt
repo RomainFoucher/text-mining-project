@@ -21,6 +21,18 @@ target_include_directories(Trie PRIVATE
 target_compile_options(Trie PRIVATE
         -Wall -Wextra -pedantic)
 
+# Static lib
+add_library(Lib STATIC)
+target_sources(Lib PRIVATE
+        lib/contract.cc
+        lib/indent.cc
+        lib/indent.hh)
+target_include_directories(Lib PRIVATE
+        lib)
+target_compile_options(Trie PRIVATE
+        -Wall -Wextra -pedantic)
+
+
 
 # First executable
 add_executable(TextMiningCompiler)
@@ -31,7 +43,8 @@ target_include_directories(TextMiningCompiler PRIVATE
         src
         src/compiler)
 target_link_libraries(TextMiningCompiler PRIVATE
-        Trie)
+        Trie
+        Lib)
 target_compile_options(TextMiningCompiler PRIVATE
         -Wall -Wextra -pedantic)
 

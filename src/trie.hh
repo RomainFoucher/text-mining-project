@@ -3,20 +3,18 @@
 #include <map>
 #include <string>
 
-namespace {
-    using namespace std;
-}
-
 struct TrieNode
 {
-    map<char,TrieNode*> children;
+    std::map<char, TrieNode*> children;
     bool endofword = false;
     int prefixes = 0;
     TrieNode() = default;
 };
 
-void insert(TrieNode *root, const string& word);
+void insert(TrieNode* root, const std::string& word);
 
-bool search(TrieNode *root, const string& word);
+bool search(const TrieNode* root, const std::string& word);
 
-void destroy(TrieNode * root);
+void destroy(TrieNode* root);
+
+void print_trie(const TrieNode* root);

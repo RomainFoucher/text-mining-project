@@ -18,6 +18,8 @@ int main(int argc, char* argv[])
     auto trie = get_trie_from_file(input_file);
     input_file.close();
     // Do something with it?
+    print_trie(trie);
+
     destroy(trie);
 
     auto output_name = argv[2];

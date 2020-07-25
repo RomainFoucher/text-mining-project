@@ -1,11 +1,11 @@
 #include "trie.hh"
 
-#include<iostream>
-#include<cstdio>
-#include<string>
-#include<vector>
-#include<algorithm>
-#include<cmath>
+#include <iostream>
+#include <cstdio>
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <cmath>
 
 void insert(TrieNode *root, const string& word)
 {
@@ -25,20 +25,20 @@ void insert(TrieNode *root, const string& word)
     current->endofword=true;
 }
 
-bool search(TrieNode *root,const string& word)
+bool search(const TrieNode* root,const string& word)
 {
-    TrieNode *current=root;
+    const TrieNode* current = root;
     for(const char& ch : word)
     {
-        TrieNode *node=current->children[ch];
-        if(!node)
+        auto node = current->children.at(ch);
+        if (!node)
             return false;
-        current=node;
+        current = node;
     }
     return current->endofword;
 }
 
-void destroy(TrieNode * root)
+void destroy(TrieNode* root)
 {
     for(const auto& i : root->children)
     {
@@ -46,3 +46,34 @@ void destroy(TrieNode * root)
     }
     delete(root);
 }
+
+/* DEBUG */
+
+void bst_print_dot_aux(const TrieNode* node, char cur_char, unsigned& nb)
+{
+    unsigned i = nb;
+    cout << "    " << nb << " [label = \"" << cur_char << "\"]\n";
+    for (const auto& [c, child] : node->children)
+    {
+        ++nb;
+        cout << "    " << i << " -> " << nb << "\n";
+        bst_print_dot_aux(child, c, nb);
+    }
+}
+
+void print_trie(const TrieNode *root) {
+    cout << "digraph Trie {\n";
+    cout << "    node [fontname=\"Arial\"];\n";
+
+    if (!root)
+        cout << "\n";
+    else
+    {
+        unsigned i = 0;
+        bst_print_dot_aux(root, ' ', i);
+    }
+
+    cout <<  "}\n";
+}
+
+/* DEBUG END */

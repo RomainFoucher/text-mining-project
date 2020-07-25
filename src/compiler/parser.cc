@@ -1,6 +1,8 @@
 #include "parser.hh"
 
-struct TrieNode *get_trie_from_file(std::ifstream& input)
+using namespace std;
+
+struct TrieNode *get_trie_from_file(ifstream& input)
 {
     string line;
 
@@ -13,13 +15,13 @@ struct TrieNode *get_trie_from_file(std::ifstream& input)
         char c = line[i];
         while ( c != ' ' && c != '\t')
         {
-            word.insert(c);
+            word.push_back(c);
             c = line[++i];
         }
         while (c == ' ' || c == '\t') c = line[++i];
         while (c != '\0')
         {
-            nb.insert(c);
+            nb.push_back(c);
             c = line[++i];
         }
 
