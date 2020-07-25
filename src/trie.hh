@@ -15,6 +15,6 @@ void insert(TrieNode* root, const std::string& word);
 
 bool search(const TrieNode* root, const std::string& word);
 
-void destroy(TrieNode* root);
+void destroy(struct TrieNode* root);
 
 void print_trie(const TrieNode* root);

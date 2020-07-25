@@ -2,7 +2,7 @@
 
 using namespace std;
 
-struct TrieNode *get_trie_from_file(ifstream& input)
+TrieNode *get_trie_from_file(ifstream& input)
 {
     string line;
 
@@ -24,9 +24,13 @@ struct TrieNode *get_trie_from_file(ifstream& input)
             nb.push_back(c);
             c = line[++i];
         }
-
-        std::cout << line << '\t' << word << '\t' << nb << std::endl;
+        //std::cout << line << '\t' << word << '\t' << nb << std::endl;
         insert(root, word);
     }
     return root;
+}
+
+void write_trie(TrieNode* root, std::ofstream& output)
+{
+    // TODO
 }

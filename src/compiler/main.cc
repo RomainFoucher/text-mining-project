@@ -28,7 +28,7 @@ int main(int argc, char* argv[])
         std::cerr << "Cannot open " << output_name;
         return 1;
     }
-    //write_trie(trie, output_file);
+    write_trie(trie, output_file);
     output_file.close();
     return 0;
 }
