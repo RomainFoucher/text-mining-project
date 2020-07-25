@@ -1,4 +1,4 @@
-#include "compiler/trie.hh"
+#include "trie.hh"
 
 #include <iostream>
 

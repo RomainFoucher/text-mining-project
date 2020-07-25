@@ -1,9 +1,10 @@
 #pragma once
 
 #include "trie.hh"
+#include "patricia.hh"
 
 #include <iostream>
 #include <fstream>
 
-TrieNode *get_trie_from_file(std::ifstream&);
-void write_trie(TrieNode*, std::ofstream&);
+trie::TrieNode* get_trie_from_file(char*);
+void patricia_write(patricia::Patricia*, char*);

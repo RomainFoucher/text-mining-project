@@ -4,17 +4,17 @@
 #include <map>
 #include <vector>
 
-struct TrieNode
+namespace trie
 {
-    std::map<std::string, TrieNode*> children;
-    bool end_of_word = false;
-    TrieNode() = default;
-};
+    struct TrieNode
+    {
+        std::map<std::string, TrieNode*> children;
+        bool end_of_word = false;
+    };
 
-void insert(TrieNode* root, const std::string& word);
+    void trie_insert(TrieNode *root, const std::string &word);
 
-bool search(const TrieNode* root, const std::string& word);
+    void trie_destroy(struct TrieNode* root);
 
-void destroy(struct TrieNode* root);
-
-void print_trie(const TrieNode* root);
+    void trie_print(const TrieNode *root);
+}
