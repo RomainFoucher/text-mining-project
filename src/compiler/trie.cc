@@ -9,20 +9,19 @@
 
 void insert(TrieNode *root, const std::string& word)
 {
-    TrieNode *current = root;
-    for(const char& i : word)
+    TrieNode* current = root;
+    for(const char& ch : word)
     {
-        char ch=i;
-        TrieNode *node=current->children[ch];
+        std::string str = {ch};
+        TrieNode* node = current->children[str];
         if(!node)
         {
             node=new TrieNode();
-            current->children[i]=node;
+            current->children[str] = node;
         }
         current=node;
-        current->prefixes++;
     }
-    current->endofword=true;
+    current->end_of_word=true;
 }
 
 bool search(const TrieNode* root,const std::string& word)
@@ -30,12 +29,13 @@ bool search(const TrieNode* root,const std::string& word)
     const TrieNode* current = root;
     for(const char& ch : word)
     {
-        auto node = current->children.at(ch);
+        std::string str = {ch};
+        auto node = current->children.at(str);
         if (!node)
             return false;
         current = node;
     }
-    return current->endofword;
+    return current->end_of_word;
 }
 
 void destroy(struct TrieNode* root)
@@ -49,10 +49,10 @@ void destroy(struct TrieNode* root)
 
 /* DEBUG */
 
-void bst_print_dot_aux(const TrieNode* node, char cur_char, unsigned& nb)
+void bst_print_dot_aux(const TrieNode* node, std::string cur_str, unsigned& nb)
 {
     unsigned i = nb;
-    std::cout << "    " << nb << " [label = \"" << cur_char << "\"]\n";
+    std::cout << "    " << nb << " [label = \"" << cur_str << "\"]\n";
     for (const auto& [c, child] : node->children)
     {
         ++nb;
@@ -70,7 +70,7 @@ void print_trie(const TrieNode *root) {
     else
     {
         unsigned i = 0;
-        bst_print_dot_aux(root, ' ', i);
+        bst_print_dot_aux(root, "", i);
     }
 
     std::cout <<  "}\n";

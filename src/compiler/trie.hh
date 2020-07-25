@@ -1,13 +1,13 @@
 #pragma once
 
-#include <map>
 #include <string>
+#include <map>
+#include <vector>
 
 struct TrieNode
 {
-    std::map<char, TrieNode*> children;
-    bool endofword = false;
-    int prefixes = 0;
+    std::map<std::string, TrieNode*> children;
+    bool end_of_word = false;
     TrieNode() = default;
 };
 

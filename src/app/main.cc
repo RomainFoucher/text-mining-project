@@ -1,11 +1,11 @@
-#include "trie.hh"
+#include "compiler/trie.hh"
 
 #include <iostream>
 
 int main(void)
 {
     TrieNode tn;
-    tn.endofword = true;
-    std::cout << tn.endofword << std::endl;
+    tn.end_of_word = true;
+    std::cout << tn.end_of_word << std::endl;
     return 0;
 }
