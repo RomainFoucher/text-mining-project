@@ -6,7 +6,7 @@
 
 using namespace std;
 
-void trie_node_clean(TrieNode root)
+void trie_node_clean(TrieNode& root)
 {
     for (size_t i = 0; i < root.nb_children; ++i)
         trie_node_clean(root.children[i].child);

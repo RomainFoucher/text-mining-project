@@ -22,7 +22,7 @@ struct Data {
     TrieNode child;
 };
 
-void trie_node_clean(TrieNode);
+void trie_node_clean(TrieNode&);
 
 class Patricia {
 public:
