@@ -14,7 +14,7 @@ namespace trie
         bool end_of_word = false;
     };
 
-    patricia::Patricia trie_merge(TrieNode *root, std::string& table);
+    patricia::Patricia trie_merge(TrieNode *root);
 
     void trie_insert(TrieNode *root, const std::string &word);
 

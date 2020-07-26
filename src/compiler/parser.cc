@@ -55,13 +55,13 @@ static void write_node(const patricia::TrieNode* node, std::ofstream& output)
     }
 }
 
-void patricia_write(const patricia::Patricia* trie, char* output_name)
+void patricia_write(const patricia::Patricia& trie, char* output_name)
 {
     std::ofstream output_file(output_name);
     if (not output_file.is_open()) {
         std::cerr << "Cannot open " << output_name;
         return;
     }
-    write_node(trie->root, output_file);
+    write_node(trie.root, output_file);
     output_file.close();
 }

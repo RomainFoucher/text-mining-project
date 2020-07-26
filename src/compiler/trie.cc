@@ -71,10 +71,10 @@ namespace trie {
     }
 
 
-    patricia::Patricia trie_merge(TrieNode *root, std::string& table)
+    patricia::Patricia trie_merge(TrieNode *root)
     {
         patricia::Patricia p = patricia::Patricia();
-        rec_merge_multi_nodes(root, p.root, table);
+        rec_merge_multi_nodes(root, p.root, p.table);
         return p;
     }
 

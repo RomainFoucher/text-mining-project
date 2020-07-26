@@ -10,7 +10,8 @@ int main(int argc, char* argv[])
     // Do something with it?
     trie::trie_print(trie);
     //trie_merge(root)
-    patricia::Patricia* patricia_trie = nullptr;
+    patricia::Patricia patricia_trie = trie::trie_merge(trie);
+
     trie::trie_destroy(trie);
 
     patricia_write(patricia_trie, argv[2]);
