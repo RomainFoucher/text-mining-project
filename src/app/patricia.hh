@@ -38,14 +38,17 @@ public:
     // Memory
     int fd = -1;
 
+
     ~Patricia()
     {
         trie_node_clean(root);
         close(fd);
-        munmap(table, table_size + 1);
-    }
-};
 
+        munmap(table - size_of_table_size,
+                table_size + size_of_table_size);
+    }
+    static constexpr size_t size_of_table_size = sizeof(Patricia::table_size);
+};
 
 bool search(const Patricia* root, const std::string& word);
 Patricia get_patricia_from_file(char*);

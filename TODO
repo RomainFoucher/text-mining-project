@@ -13,7 +13,7 @@ TODO    - no sort in NodeTrie child
         - sort in NodeTrie child
         - bst in NodeTrie child
 TODO (opt) remove end_of_word optimization
-
+TODO dot output in stderr
 
  1.	Décrivez les choix de design de votre programme
  2.	Listez l’ensemble des tests effectués sur votre programme (en plus des units tests)

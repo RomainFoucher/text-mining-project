@@ -4,7 +4,6 @@
 #include <iostream>
 #include <sys/mman.h>
 #include <fcntl.h>
-#include <unistd.h>
 
 
 using namespace std;
@@ -52,23 +51,28 @@ static void skip_table(std::ifstream& input, uint32_t table_size)
 
 static void store_table(int fd, Patricia& patricia)
 {
-    patricia.table = (char *) mmap(
+    //std::cerr << "sizeof table_size: " << Patricia::size_of_table_size << std::endl; // DEBUG
+    auto table = (char *) mmap(
             nullptr, // No address to start with
-            patricia.table_size, // Size is table_size + 1
+            patricia.table_size + Patricia::size_of_table_size, // Size is table_size + 1
             PROT_READ, // Read only
-            0, // No flag
+            MAP_PRIVATE, // No flag
             fd, // Read from input file
-            sizeof(patricia.table_size) // Skip size bytes
-            // 0
-    );
+            // FIXME Seems like you cannot do it?
+            //sizeof(patricia.table_size) // Skip size bytes
+            0
+    ) + Patricia::size_of_table_size;
+    //std::cerr << "table pointer: " << &table << std::endl; // DEBUG
+    //for (uint32_t i = 0; i < patricia.table_size; ++i) // DEBUG
+    //    std::cerr << "  i = " << i << ": " << table[i] << std::endl; // DEBUG
+    patricia.table = table;
     patricia.fd = fd;
 }
 
-static void store_table_input(std::ifstream& input, Patricia& patricia)
+[[maybe_unused]] static void store_table_input(std::ifstream& input, Patricia& patricia)
 {
     patricia.table = new char[patricia.table_size];
     input.read(patricia.table, patricia.table_size);
-    std::cout << patricia.table << std::endl;
 }
 
 
@@ -82,7 +86,7 @@ Patricia get_patricia_from_file(char* input_name)
     else
     {
         store_table_size(input, patricia.table_size);
-        std::cout << "table size: " << patricia.table_size << std::endl;
+        //std::cerr << "table size: " << patricia.table_size << std::endl; // DEBUG
         skip_table(input, patricia.table_size);
         store_node(input, patricia.root);
 
@@ -97,15 +101,23 @@ Patricia get_patricia_from_file(char* input_name)
     return patricia;
 }
 
-std::string get_string_from_table(const std::string& table,
-                                  uint32_t index, uint8_t len)
+static char get_char_from_table(const Patricia& patricia, uint32_t index)
 {
-    return table.substr(index, len);
+    // std::cerr << patricia.table[index] << std::endl; DEBUG
+    return patricia.table[index];
+}
+
+std::string get_string_from_table(const Patricia& patricia, uint32_t index, uint8_t len)
+{
+    std::string str;
+    for (uint8_t i = 0; i < len; ++i)
+        str.push_back(get_char_from_table(patricia, index + i));
+    return str;
 }
 
 /* DEBUG */
 static void patricia_print_dot_aux(const TrieNode& node,
-                                   const std::string& table, unsigned &nb)
+                                   const Patricia& patricia, unsigned &nb)
 {
     unsigned i = nb;
     std::string color = node.end_of_word ? "cyan" : "white";
@@ -120,10 +132,10 @@ static void patricia_print_dot_aux(const TrieNode& node,
         const Data& data = node.children[child_i];
         ++nb;
         std::string link_str { data.next_char };
-        auto node_str = get_string_from_table(table, data.index, data.len);
+        auto node_str = get_string_from_table(patricia, data.index, data.len);
         std::cout << "    " << i << " -> " << nb
                   << " [label  = \"" << link_str << node_str <<"\"]\n";
-        patricia_print_dot_aux(data.child, table, nb);
+        patricia_print_dot_aux(data.child, patricia, nb);
     }
 }
 
@@ -134,7 +146,7 @@ void patricia_print(const Patricia& patricia)
 
     const TrieNode& root = patricia.root;
     unsigned i = 0;
-    patricia_print_dot_aux(root, patricia.table, i);
+    patricia_print_dot_aux(root, patricia, i);
 
     std::cout << "}\n";
 }
