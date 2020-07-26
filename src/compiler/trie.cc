@@ -109,7 +109,12 @@ namespace trie {
     static void trie_print_dot_aux(const TrieNode *node, const std::string &cur_str, unsigned &nb)
     {
         unsigned i = nb;
-        std::cout << "    " << nb << " [label = \"" << cur_str << "\"]\n";
+        std::string color = node->end_of_word ? "cyan" : "white";
+        std::cout << "    " << nb << " ["
+                  << " label=\"" << cur_str << "\""
+                  << " fillcolor=\"" << color << "\""
+                  << " style=filled"
+                  << " ]\n";
         for (const auto&[c, child] : node->children)
         {
             ++nb;

@@ -26,7 +26,6 @@ namespace patricia
     {
         unsigned i = nb;
         std::string color = node->end_of_word ? "cyan" : "white";
-        std::cerr << color;
         std::cout << "    " << nb << " ["
                   << " label=\"" << cur_str << "\""
                   << " fillcolor=\"" << color << "\""
