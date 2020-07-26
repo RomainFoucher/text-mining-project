@@ -5,15 +5,22 @@ int main(int argc, char* argv[])
 {
     if (argc != 3) return 1;
 
+    std::cerr << "Generate Trie :" << std::endl;
+
     trie::TrieNode* trie = get_trie_from_file(argv[1]);
     if (trie == nullptr) return 1;
-    // Do something with it?
+
     //trie::trie_print(trie);
-    //trie_merge(root)
+
+    std::cerr << "Generate Patricia :" << std::endl;
+
     patricia::Patricia patricia_trie = trie::trie_merge(trie);
+
     trie::trie_destroy(trie);
 
     patricia::patricia_print(patricia_trie);
+
+    std::cerr << "Write Patricia :" << std::endl;
 
     patricia_write(patricia_trie, argv[2]);
 
