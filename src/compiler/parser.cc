@@ -42,6 +42,12 @@ trie::TrieNode *get_trie_from_file(char* input_name)
     return root;
 }
 
+
+static void write_table(const string& table, std::ofstream& output)
+{
+    output << table.c_str();
+}
+
 static void write_node(const patricia::TrieNode* node, std::ofstream& output)
 {
     output << node->end_of_word;
@@ -63,5 +69,6 @@ void patricia_write(const patricia::Patricia& trie, char* output_name)
         return;
     }
     write_node(trie.root, output_file);
+    write_table(trie.table, output_file);
     output_file.close();
 }

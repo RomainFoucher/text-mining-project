@@ -25,6 +25,8 @@ nb_children = size_t
 data =
     next_char index len trie_node
 
+table = (char)* '\0'
+
 next_char = char
 index = uint64_t
 len = uint64_t

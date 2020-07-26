@@ -27,7 +27,9 @@ void trie_node_clean(TrieNode);
 class Patricia {
 public:
     TrieNode root;
-    std::vector<std::string> *table = new std::vector<std::string>;
+    // Array of char
+    size_t table_size;
+    char* table;
 
     ~Patricia()
     {
