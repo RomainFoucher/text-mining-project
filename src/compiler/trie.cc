@@ -66,7 +66,7 @@ namespace trie {
             p->children[value[0]] = nw_dt;
 
             // Call recursively
-            rec_merge_multi_nodes(i.second, nw_node, table);
+            rec_merge_multi_nodes(next_node, nw_node, table);
         }
     }
 
