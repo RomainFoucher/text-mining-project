@@ -1,13 +1,12 @@
-dot -Tpng tmp.dot > a.png
-feh a.png
+Dot to png
+==========
+dot -Tpng tmp.dot > tmp.png
+feh tmp.png
 
-// TODO test empty dictionary
 
 
-===============================================================================
-
-Dictionary grammar:
--------------------
+Dictionary grammar
+==================
 () is a group
 ? is zero or one
 + is one or more
@@ -29,5 +28,3 @@ data =
 next_char = char
 index = uint64_t
 len = uint64_t
-
-===============================================================================

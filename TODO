@@ -1,0 +1,19 @@
+TODO test suite (unit, check-against-ref, leak)
+TODO test empty dictionary
+TODO doxygen
+TODO AUTHORS
+TODO app: main parse stdin
+TODO app: search
+TODO app: output json
+TODO README: explication subject
+TODO README: questions
+TODO (opt) compiler: pretty print patricia
+TODO (opt) app: pretty print patricia
+ 1.	Décrivez les choix de design de votre programme
+ 2.	Listez l’ensemble des tests effectués sur votre programme (en plus des units tests)
+ 3.	Avez-vous détecté des cas où la correction par distance ne fonctionnait pas (même avec une distance élevée) ?
+ 4.	Quelle est la structure de données que vous avez implémentée dans votre projet, pourquoi ?
+ 5.	Proposez un réglage automatique de la distance pour un programme qui prend juste une chaîne de caractères en entrée, donner le processus d’évaluation ainsi que les résultats
+ 6.	Comment comptez vous améliorer les performances de votre programme
+ 7.	Que manque-t-il à votre correcteur orthographique pour qu’il soit à l’état de l’art ?
+
