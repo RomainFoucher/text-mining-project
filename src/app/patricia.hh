@@ -28,8 +28,8 @@ class Patricia {
 public:
     TrieNode root;
     // Array of char
-    size_t table_size;
-    char* table;
+    size_t table_size = 0;
+    char* table = nullptr;
 
     ~Patricia()
     {

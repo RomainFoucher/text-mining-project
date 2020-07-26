@@ -10,13 +10,15 @@ namespace patricia {
 
     // TODO 32
     struct Data {
-        uint64_t index;
-        uint64_t len;
+        uint32_t index;
+        // 256 character MAX
+        uint8_t len;
         TrieNode* child;
     };
 
     struct TrieNode {
         bool end_of_word = false;
+        uint32_t frequency = 0;
         std::map<char, Data> children;
     };
 
@@ -36,6 +38,6 @@ namespace patricia {
     void patricia_print(const Patricia&);
 
     std::string get_string_from_table(const std::string& table,
-            uint64_t index, uint64_t len);
+            uint32_t index, uint32_t len);
 }
 

@@ -25,7 +25,8 @@ static trie::TrieNode *get_trie_node_from_file(std::ifstream& input)
             c = line[++i];
         }
         //std::cout << line << '\t' << word << '\t' << nb << std::endl;
-        trie_insert(root, word);
+        uint32_t freq = std::stoul(nb);
+        trie_insert(root, word, freq);
     }
     return root;
 }
@@ -43,32 +44,40 @@ trie::TrieNode *get_trie_from_file(char* input_name)
 }
 
 
-static void write_table(const string& table, std::ofstream& output)
+static void write_table(std::ofstream& output, const string& table)
 {
     output << table.c_str();
 }
 
-static void write_node(const patricia::TrieNode* node, std::ofstream& output)
+template<typename T>
+static void write_(std::ofstream& output, T elm)
 {
-    output << node->end_of_word;
-    output << node->children.size();
+    // DEBUG std::cerr << sizeof(elm) << std::endl;
+    output.write(reinterpret_cast<const char *>(&elm), sizeof(elm));
+}
+
+static void write_node(std::ofstream& output, const patricia::TrieNode* node)
+{
+    write_(output, node->end_of_word);
+    write_(output, node->frequency);
+    write_(output, (uint8_t) node->children.size());
     for (const auto&[c, data] : node->children)
     {
-        output << c;
-        output << data.index;
-        output << data.len;
-        write_node(data.child, output);
+        write_(output, c);
+        write_(output, data.index);
+        write_(output, data.len);
+        write_node(output, data.child);
     }
 }
 
 void patricia_write(const patricia::Patricia& trie, char* output_name)
 {
-    std::ofstream output_file(output_name);
+    std::ofstream output_file(output_name, std::ofstream::out | std::ofstream::binary);
     if (not output_file.is_open()) {
         std::cerr << "Cannot open " << output_name;
         return;
     }
-    write_node(trie.root, output_file);
-    write_table(trie.table, output_file);
+    write_node(output_file, trie.root);
+    write_table(output_file, trie.table);
     output_file.close();
 }

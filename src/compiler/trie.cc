@@ -7,7 +7,7 @@ namespace trie {
 
     std::pair<uint64_t , uint64_t> find_table_position(const std::string& str, std::string& table)
     {
-        if (str == "")
+        if (str.empty())
         {
             return {0, 0};
         }
@@ -43,6 +43,7 @@ namespace trie {
     void rec_merge_multi_nodes(trie::TrieNode *node, patricia::TrieNode *p, std::string& table)
     {
         p->end_of_word = node->end_of_word;
+        p->frequency = node->frequency;
         for (const auto &i : node->children)
         {
 
@@ -79,7 +80,7 @@ namespace trie {
     }
 
 
-    void trie_insert(TrieNode *root, const std::string &word)
+    void trie_insert(TrieNode *root, const std::string &word, uint32_t freq)
     {
         TrieNode *current = root;
         for (const char &ch : word)
@@ -94,6 +95,7 @@ namespace trie {
             current = node;
         }
         current->end_of_word = true;
+        current->frequency = freq;
     }
 
     void trie_destroy(struct TrieNode *root)
@@ -106,20 +108,24 @@ namespace trie {
     }
 
 /* DEBUG */
-    static void trie_print_dot_aux(const TrieNode *node, const std::string &cur_str, unsigned &nb)
+    static void trie_print_dot_aux(const TrieNode *node, unsigned &nb)
     {
         unsigned i = nb;
         std::string color = node->end_of_word ? "cyan" : "white";
+        std::string label = node->frequency ? std::to_string(node->frequency) : "";
+
         std::cout << "    " << nb << " ["
-                  << " label=\"" << cur_str << "\""
+                  << " label=\"" << label << "\""
                   << " fillcolor=\"" << color << "\""
                   << " style=filled"
                   << " ]\n";
         for (const auto&[c, child] : node->children)
         {
             ++nb;
-            std::cout << "    " << i << " -> " << nb << "\n";
-            trie_print_dot_aux(child, c, nb);
+            std::string link_str { c };
+            std::cout << "    " << i << " -> " << nb
+                      << " [label  = \"" << link_str <<"\"]\n";
+            trie_print_dot_aux(child, nb);
         }
     }
 
@@ -133,7 +139,7 @@ namespace trie {
         else
         {
             unsigned i = 0;
-            trie_print_dot_aux(root, "", i);
+            trie_print_dot_aux(root, i);
         }
 
         std::cout << "}\n";

@@ -17,10 +17,11 @@ file =
     trie_node table
 
 trie_node =
-    end_of_word nb_children (data)*
+    end_of_word frequency nb_children (data)*
 
 end_of_word = char
-nb_children = size_t
+frequency = uint_32
+nb_children = uint8_t
 
 data =
     next_char index len trie_node
@@ -28,5 +29,5 @@ data =
 table = (char)* '\0'
 
 next_char = char
-index = uint64_t
-len = uint64_t
+index = uint32_t
+len = uint8_t

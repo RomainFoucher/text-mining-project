@@ -6,7 +6,7 @@
 namespace patricia
 {
     std::string get_string_from_table(const std::string& table,
-                                       uint64_t index, uint64_t len)
+                                       uint32_t index, uint32_t len)
     {
         return table.substr(index, len);
     }
@@ -21,13 +21,14 @@ namespace patricia
 
 
 /* DEBUG */
-    static void patricia_print_dot_aux(const TrieNode *node, const std::string& table,
-            const std::string& cur_str, unsigned &nb)
+    static void patricia_print_dot_aux(const TrieNode *node,
+            const std::string& table, unsigned &nb)
     {
         unsigned i = nb;
         std::string color = node->end_of_word ? "cyan" : "white";
+        std::string label = node->frequency ? std::to_string(node->frequency) : "";
         std::cout << "    " << nb << " ["
-                  << " label=\"" << cur_str << "\""
+                  << " label=\"" << label << "\""
                   << " fillcolor=\"" << color << "\""
                   << " style=filled"
                   << " ]\n";
@@ -37,8 +38,8 @@ namespace patricia
             std::string link_str { c };
             auto node_str = get_string_from_table(table, data.index, data.len);
             std::cout << "    " << i << " -> " << nb
-                      << " [label  = \"" << link_str <<"\"]\n";
-            patricia_print_dot_aux(data.child, table, node_str, nb);
+                      << " [label  = \"" << link_str << node_str <<"\"]\n";
+            patricia_print_dot_aux(data.child, table, nb);
         }
     }
 
@@ -53,7 +54,7 @@ namespace patricia
         else
         {
             unsigned i = 0;
-            patricia_print_dot_aux(root, patricia.table, "", i);
+            patricia_print_dot_aux(root, patricia.table, i);
         }
 
         std::cout << "}\n";
