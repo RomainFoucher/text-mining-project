@@ -42,18 +42,26 @@ trie::TrieNode *get_trie_from_file(char* input_name)
     return root;
 }
 
-static void write_tmp(patricia::Patricia* trie, std::ofstream& output)
+static void write_node(const patricia::TrieNode* node, std::ofstream& output)
 {
-    // TODO
+    output << node->end_of_word;
+    output << node->children.size();
+    for (const auto&[c, data] : node->children)
+    {
+        output << c;
+        output << data.index;
+        output << data.len;
+        write_node(data.child, output);
+    }
 }
 
-void patricia_write(patricia::Patricia* trie, char* output_name)
+void patricia_write(const patricia::Patricia* trie, char* output_name)
 {
     std::ofstream output_file(output_name);
     if (not output_file.is_open()) {
         std::cerr << "Cannot open " << output_name;
         return;
     }
-    write_tmp(trie, output_file);
+    write_node(trie->root, output_file);
     output_file.close();
 }

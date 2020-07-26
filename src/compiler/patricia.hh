@@ -23,6 +23,7 @@ namespace patricia {
     void trie_node_delete(TrieNode*);
 
     class Patricia {
+    public:
         TrieNode *root;
         std::vector<std::string> *table = new std::vector<std::string>;
 
