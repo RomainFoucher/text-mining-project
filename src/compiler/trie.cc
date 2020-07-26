@@ -32,7 +32,7 @@ namespace trie
     }
 
 /* DEBUG */
-    void bst_print_dot_aux(const TrieNode *node, const std::string &cur_str, unsigned &nb)
+    static void trie_print_dot_aux(const TrieNode *node, const std::string &cur_str, unsigned &nb)
     {
         unsigned i = nb;
         std::cout << "    " << nb << " [label = \"" << cur_str << "\"]\n";
@@ -40,7 +40,7 @@ namespace trie
         {
             ++nb;
             std::cout << "    " << i << " -> " << nb << "\n";
-            bst_print_dot_aux(child, c, nb);
+            trie_print_dot_aux(child, c, nb);
         }
     }
 
@@ -54,7 +54,7 @@ namespace trie
         else
         {
             unsigned i = 0;
-            bst_print_dot_aux(root, "", i);
+            trie_print_dot_aux(root, "", i);
         }
 
         std::cout << "}\n";

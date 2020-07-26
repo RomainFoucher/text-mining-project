@@ -12,7 +12,7 @@ namespace patricia {
     struct Data {
         uint64_t index;
         uint64_t len;
-        TrieNode *child;
+        TrieNode* child;
     };
 
     struct TrieNode {
@@ -25,14 +25,17 @@ namespace patricia {
     class Patricia {
     public:
         TrieNode *root;
-        std::vector<std::string> *table = new std::vector<std::string>;
+        std::string table;
 
         ~Patricia()
         {
             trie_node_delete(root);
-            free(table);
         }
     };
 
+    void patricia_print(const Patricia&);
+
+    std::string get_string_from_table(const std::string& table,
+            uint64_t index, uint64_t len);
 }
 
