@@ -1,2 +1,33 @@
 dot -Tpng tmp.dot > a.png
 feh a.png
+
+// TODO test empty dictionary
+
+
+===============================================================================
+
+Dictionary grammar:
+-------------------
+() is a group
+? is zero or one
++ is one or more
+* is zero or more
+-------------------
+
+file =
+    trie_node table
+
+trie_node =
+    end_of_word nb_children (data)*
+
+end_of_word = char
+nb_children = size_t
+
+data =
+    next_char index len trie_node
+
+next_char = char
+index = uint64_t
+len = uint64_t
+
+===============================================================================
