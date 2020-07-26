@@ -59,5 +59,8 @@ namespace patricia
 
         std::cout << "}\n";
     }
-/* DEBUG END */
+    Patricia::Patricia()
+    {
+        root = new TrieNode();
+    }
 }

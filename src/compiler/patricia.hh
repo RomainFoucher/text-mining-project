@@ -26,7 +26,7 @@ namespace patricia {
     public:
         TrieNode *root;
         std::string table;
-
+        Patricia();
         ~Patricia()
         {
             trie_node_delete(root);

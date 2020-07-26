@@ -4,6 +4,8 @@
 #include <map>
 #include <vector>
 
+#include "patricia.hh"
+
 namespace trie
 {
     struct TrieNode
@@ -11,6 +13,8 @@ namespace trie
         std::map<std::string, TrieNode*> children;
         bool end_of_word = false;
     };
+
+    patricia::Patricia trie_merge(TrieNode *root, std::string& table);
 
     void trie_insert(TrieNode *root, const std::string &word);
 

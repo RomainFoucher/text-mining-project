@@ -3,8 +3,82 @@
 #include <iostream>
 
 
-namespace trie
-{
+namespace trie {
+
+    std::pair<uint64_t , uint64_t> find_table_position(std::string str, std::string& table)
+    {
+        if (str == "")
+        {
+            return {0, 0};
+        }
+        std::size_t pos = table.find(str);
+        if (pos != std::string::npos)
+        {
+            return {pos, str.size()};
+        }
+        else
+        {
+            table.append(str);
+            return {table.size() - str.size(), str.size()};
+        }
+    }
+
+    trie::TrieNode* rec_merge_single_node(trie::TrieNode* node, std::string& str) // return a multi node
+    {
+        if (node->end_of_word)
+        {
+            return node;
+        }
+        else if (node->children.size() == 1)
+        {
+            str.append(node->children.begin()->first);
+            return rec_merge_single_node(node->children.begin()->second, str);
+        }
+        else
+        {
+            return node;
+        }
+    }
+
+    void rec_merge_multi_nodes(trie::TrieNode *node, patricia::TrieNode *p, std::string& table)
+    {
+        p->end_of_word = node->end_of_word;
+        for (const auto &i : node->children)
+        {
+
+            // Create new patricia node
+            auto* nw_node = new patricia::TrieNode();
+            std::string value({i.first[0]});
+
+            // Merge single node
+            auto next_node = rec_merge_single_node(i.second, value);
+
+            // Put value in table and return position
+            auto pos_table = find_table_position(value.substr(1, value.size() - 1), table);
+
+            // Create new data struct
+            patricia::Data nw_dt{};
+            nw_dt.index = pos_table.first;
+            nw_dt.len = pos_table.second;
+            nw_dt.child = nw_node;
+
+            // Add new data struct to node
+            p->children[value[0]] = nw_dt;
+
+            // Call recursively
+            rec_merge_multi_nodes(i.second, nw_node, table);
+        }
+    }
+
+
+    patricia::Patricia trie_merge(TrieNode *root, std::string& table)
+    {
+        patricia::Patricia p = patricia::Patricia();
+        rec_merge_multi_nodes(root, p.root, table);
+        return p;
+    }
+
+
     void trie_insert(TrieNode *root, const std::string &word)
     {
         TrieNode *current = root;
