@@ -6,7 +6,7 @@
 namespace patricia
 {
     std::string get_string_from_table(const std::string& table,
-                                       uint32_t index, uint32_t len)
+                                       uint32_t index, uint8_t len)
     {
         return table.substr(index, len);
     }

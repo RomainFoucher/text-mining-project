@@ -12,7 +12,7 @@ TODO (opt) app: pretty print patricia
 TODO    - no sort in NodeTrie child
         - sort in NodeTrie child
         - bst in NodeTrie child
-
+TODO (opt) remove end_of_word optimization
 
 
  1.	Décrivez les choix de design de votre programme

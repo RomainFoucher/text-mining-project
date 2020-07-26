@@ -1,6 +1,7 @@
 # Project
 ref/
 words.txt
+*.bin
 
 # CMake
 cmake-build-debug/

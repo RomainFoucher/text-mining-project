@@ -15,10 +15,10 @@ int main(int argc, char* argv[])
     std::cerr << "Generate Patricia :" << std::endl;
 
     patricia::Patricia patricia_trie = trie::trie_merge(trie);
-
     trie::trie_destroy(trie);
 
     patricia::patricia_print(patricia_trie);
+    std::cerr << "table: " << patricia_trie.table << std::endl;
 
     std::cerr << "Write Patricia :" << std::endl;
 

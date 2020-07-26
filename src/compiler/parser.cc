@@ -44,17 +44,20 @@ trie::TrieNode *get_trie_from_file(char* input_name)
 }
 
 
-static void write_table(std::ofstream& output, const string& table)
-{
-    output << table.c_str();
-}
-
 template<typename T>
 static void write_(std::ofstream& output, T elm)
 {
     // DEBUG std::cerr << sizeof(elm) << std::endl;
     output.write(reinterpret_cast<const char *>(&elm), sizeof(elm));
 }
+
+static void write_table(std::ofstream& output, const string& table)
+{
+    uint32_t table_size = (uint32_t) table.size() + 1;
+    write_(output, table_size);
+    output.write(table.c_str(), table_size);
+}
+
 
 static void write_node(std::ofstream& output, const patricia::TrieNode* node)
 {
@@ -74,10 +77,10 @@ void patricia_write(const patricia::Patricia& trie, char* output_name)
 {
     std::ofstream output_file(output_name, std::ofstream::out | std::ofstream::binary);
     if (not output_file.is_open()) {
-        std::cerr << "Cannot open " << output_name;
+        std::cerr << "Cannot open " << output_name << '\n';
         return;
     }
-    write_node(output_file, trie.root);
     write_table(output_file, trie.table);
+    write_node(output_file, trie.root);
     output_file.close();
 }
