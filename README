@@ -1,7 +1,7 @@
 Dot to png
 ==========
 dot -Tpng tmp.dot > tmp.png
-feh tmp.png
+feh tmp.png&
 
 
 
