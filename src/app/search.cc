@@ -63,8 +63,7 @@ static void recursive_search(const Patricia& p, const TrieNode& node, const std:
         {
             char new_ch = str[0];
             recursive_search(p, node, prefix + new_ch, new_ch, ch, word, current_row, prev_row, results,
-                             distance, len - 1,
-                             str + 1);
+                             distance, len - 1, str + 1);
         }
         else
         {
@@ -77,8 +76,7 @@ static void recursive_search(const Patricia& p, const TrieNode& node, const std:
                 if (new_len == 0)
                 {
                     recursive_search(p, new_nd, prefix + new_ch, new_ch, ch, word, current_row, prev_row, results,
-                            distance, 0,
-                            nullptr);
+                            distance, 0, nullptr);
                 }
                 else
                 {
@@ -126,16 +124,16 @@ void print_json(const std::set<json_data, custom_compare>& res)
         auto it = res.begin();
         std::cout << "{";
         std::cout << "\"word\":\"" << (*it).word << "\",";
-        std::cout << "\"freq\":\"" << (int) (*it).distance << "\",";
-        std::cout << "\"distance\":\"" << (*it).frequency << "\"";
+        std::cout << "\"freq\":" << (*it).frequency << ",";
+        std::cout << "\"distance\":" << (int)(*it).distance << "";
         std::cout << "}";
         it++;
         for (; it != res.end(); ++it)
         {
             std::cout << ",{";
             std::cout << "\"word\":\"" << (*it).word << "\",";
-            std::cout << "\"freq\":\"" << (int) (*it).distance << "\",";
-            std::cout << "\"distance\":\"" << (*it).frequency << "\"";
+            std::cout << "\"freq\":" << (*it).frequency << ",";
+            std::cout << "\"distance\":" << (int)(*it).distance << "";
             std::cout << "}";
 
         }

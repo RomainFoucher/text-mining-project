@@ -11,12 +11,12 @@ namespace trie {
         {
             return {0, 0};
         }
-        std::size_t pos = table.find(str);
+        /*std::size_t pos = table.find(str);
         if (pos != std::string::npos)
         {
             return {pos, str.size()};
         }
-        else
+        else*/
         {
             table.append(str);
             return {table.size() - str.size(), str.size()};

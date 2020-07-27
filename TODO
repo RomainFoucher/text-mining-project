@@ -3,8 +3,6 @@ TODO test empty dictionary
 TODO doxygen
 TODO README: explication subject
 TODO README: questions
-TODO (opt) compiler: pretty print patricia
-TODO (opt) app: pretty print patricia
 TODO (opt) remove end_of_word optimization
 
  1.	Décrivez les choix de design de votre programme
