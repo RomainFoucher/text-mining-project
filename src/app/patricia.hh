@@ -53,6 +53,5 @@ public:
 bool search(const Patricia* root, const std::string& word);
 Patricia get_patricia_from_file(char*);
 void patricia_print(const Patricia& patricia);
-
-
-
+std::string get_string_from_table(const Patricia&, uint32_t index, uint8_t len);
+char* get_chars_from_table(const Patricia&, uint32_t index);

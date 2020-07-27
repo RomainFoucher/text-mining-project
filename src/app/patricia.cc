@@ -116,6 +116,11 @@ std::string get_string_from_table(const Patricia& patricia, uint32_t index, uint
     return str;
 }
 
+char* get_chars_from_table(const Patricia& patricia, uint32_t index)
+{
+    return patricia.table + index;
+}
+
 /* DEBUG */
 static void patricia_print_dot_aux(const TrieNode& node,
                                    const Patricia& patricia, unsigned &nb)
