@@ -1,6 +1,5 @@
-#include <iostream>
 #include "patricia.hh"
-#include "search.hh"
+#include "parser.hh"
 
 int main(int argc, char* argv[])
 {
@@ -9,9 +8,8 @@ int main(int argc, char* argv[])
     Patricia patricia = get_patricia_from_file(argv[1]);
     patricia_print(patricia);
 
-    auto res = search(patricia, "n936", 4);
-    print_json(res);
-    //std::cout << "test" << std::endl;
+    read_inputs_to_json(patricia);
+
     // input to json
     return 0;
 }

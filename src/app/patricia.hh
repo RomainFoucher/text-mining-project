@@ -50,7 +50,6 @@ public:
     static constexpr size_t size_of_table_size = sizeof(Patricia::table_size);
 };
 
-bool search(const Patricia* root, const std::string& word);
 Patricia get_patricia_from_file(char*);
 void patricia_print(const Patricia& patricia);
 std::string get_string_from_table(const Patricia&, uint32_t index, uint8_t len);

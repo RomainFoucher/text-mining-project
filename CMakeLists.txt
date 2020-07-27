@@ -42,6 +42,7 @@ target_compile_options(TextMiningCompiler PRIVATE
 add_executable(TextMiningApp)
 target_sources(TextMiningApp PRIVATE
         src/app/main.cc
+        src/app/parser.cc
         src/app/patricia.cc
         src/app/search.cc)
 target_include_directories(TextMiningApp PRIVATE
