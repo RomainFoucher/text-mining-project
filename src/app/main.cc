@@ -7,9 +7,6 @@ int main(int argc, char* argv[])
 
     Patricia patricia = get_patricia_from_file(argv[1]);
     patricia_print(patricia);
-
     read_inputs_to_json(patricia);
-
-    // input to json
     return 0;
 }

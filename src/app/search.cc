@@ -21,7 +21,6 @@ void recursive_search(const Patricia& p, const TrieNode& node, const std::string
         const std::vector<uint8_t >& prev_row, const std::vector<uint8_t>& pre_prev_row,
         std::set<json_data, custom_compare>& results, uint8_t distance, uint8_t len, char* str)
 {
-    //std::cout << prefix << std::endl;
     // Init
     uint8_t columns = word.size() + 1;
     auto current_row = std::vector<uint8_t>(word.size() + 1, 0);
@@ -104,8 +103,6 @@ std::set<json_data, custom_compare> search(const Patricia& p, const std::string&
         const TrieNode& node = p.root.children[i].child;
         std::string prefix(1, ch);
         uint8_t new_len = p.root.children[i].len;
-        //std::cout << p.root.children[i].next_char << std::endl;
-        //std::cout << (int)new_len << std::endl;
         if (new_len == 0)
         {
             recursive_search(p, node, prefix, ch, 0, word, current_row, prev_row, results, distance, 0, nullptr);
@@ -115,7 +112,6 @@ std::set<json_data, custom_compare> search(const Patricia& p, const std::string&
             char* new_str = get_chars_from_table(p, p.root.children[i].index);
             recursive_search(p, node, prefix, ch, 0, word, current_row, prev_row, results, distance, new_len, new_str);
         }
-        //std::cout << "end rec" << std::endl;
     }
     return results;
 }
@@ -123,22 +119,26 @@ std::set<json_data, custom_compare> search(const Patricia& p, const std::string&
 
 void print_json(const std::set<json_data, custom_compare>& res)
 {
+
     std::cout << "[";
-    auto it = res.begin();
-    std::cout << "{";
-    std::cout << "\"word\":\"" << (*it).word << "\",";
-    std::cout << "\"freq\":\"" << (int)(*it).distance << "\",";
-    std::cout << "\"distance\":\"" << (*it).frequency << "\"";
-    std::cout << "}";
-    it++;
-    for (; it != res.end(); ++it)
+    if (res.size() != 0)
     {
-        std::cout << ",{";
+        auto it = res.begin();
+        std::cout << "{";
         std::cout << "\"word\":\"" << (*it).word << "\",";
-        std::cout << "\"freq\":\"" << (int)(*it).distance << "\",";
+        std::cout << "\"freq\":\"" << (int) (*it).distance << "\",";
         std::cout << "\"distance\":\"" << (*it).frequency << "\"";
         std::cout << "}";
+        it++;
+        for (; it != res.end(); ++it)
+        {
+            std::cout << ",{";
+            std::cout << "\"word\":\"" << (*it).word << "\",";
+            std::cout << "\"freq\":\"" << (int) (*it).distance << "\",";
+            std::cout << "\"distance\":\"" << (*it).frequency << "\"";
+            std::cout << "}";
 
+        }
     }
-    std::cout << "]";
+    std::cout << "]\n";
 }
