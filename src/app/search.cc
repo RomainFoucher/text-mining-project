@@ -6,7 +6,7 @@
 #include <iostream>
 
 
-std::vector<uint8_t > make_row(uint8_t len)
+static std::vector<uint8_t> make_row(uint8_t len)
 {
     auto vec = std::vector<uint8_t >();
     for (uint8_t i = 0; i < len + 1; i++)
@@ -17,8 +17,8 @@ std::vector<uint8_t > make_row(uint8_t len)
 }
 
 
-void recursive_search(const Patricia& p, const TrieNode& node, const std::string prefix, char ch, char prev_ch, const std::string& word,
-        const std::vector<uint8_t >& prev_row, const std::vector<uint8_t>& pre_prev_row,
+static void recursive_search(const Patricia& p, const TrieNode& node, const std::string& prefix, char ch, char prev_ch,
+        const std::string& word, const std::vector<uint8_t >& prev_row, const std::vector<uint8_t>& pre_prev_row,
         std::set<json_data, custom_compare>& results, uint8_t distance, uint8_t len, char* str)
 {
     // Init
