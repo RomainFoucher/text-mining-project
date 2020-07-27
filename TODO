@@ -1,10 +1,6 @@
 TODO test suite (unit, check-against-ref, leak)
 TODO test empty dictionary
 TODO doxygen
-TODO AUTHORS
-TODO app: main parse stdin
-TODO app: search
-TODO app: output json
 TODO README: explication subject
 TODO README: questions
 TODO (opt) compiler: pretty print patricia
@@ -13,7 +9,6 @@ TODO    - no sort in NodeTrie child
         - sort in NodeTrie child
         - bst in NodeTrie child
 TODO (opt) remove end_of_word optimization
-TODO dot output in stderr
 
  1.	Décrivez les choix de design de votre programme
  2.	Listez l’ensemble des tests effectués sur votre programme (en plus des units tests)
