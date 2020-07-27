@@ -37,3 +37,13 @@ data =
 next_char = char
 index = uint32_t
 len = uint8_t
+
+
+
+Testsuite
+=========
+cd ./test
+(one time:)
+./init_testsuite.sh
+(anytime:)
+./test.sh
