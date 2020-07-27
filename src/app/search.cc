@@ -123,6 +123,22 @@ std::set<json_data, custom_compare> search(const Patricia& p, const std::string&
 
 void print_json(const std::set<json_data, custom_compare>& res)
 {
-    for (auto it=res.begin(); it != res.end(); ++it)
-        std::cout << ' ' << (*it).word << ' ' << (int)(*it).distance << ' ' << (*it).frequency << std::endl;
+    std::cout << "[";
+    auto it = res.begin();
+    std::cout << "{";
+    std::cout << "\"word\":\"" << (*it).word << "\",";
+    std::cout << "\"freq\":\"" << (int)(*it).distance << "\",";
+    std::cout << "\"distance\":\"" << (*it).frequency << "\"";
+    std::cout << "}";
+    it++;
+    for (; it != res.end(); ++it)
+    {
+        std::cout << ",{";
+        std::cout << "\"word\":\"" << (*it).word << "\",";
+        std::cout << "\"freq\":\"" << (int)(*it).distance << "\",";
+        std::cout << "\"distance\":\"" << (*it).frequency << "\"";
+        std::cout << "}";
+
+    }
+    std::cout << "]";
 }
