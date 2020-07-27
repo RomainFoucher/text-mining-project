@@ -47,7 +47,7 @@ void recursive_search(const Patricia& p, const TrieNode& node, const std::string
 
     // Fill results
     uint8_t act_distance;
-    if (node.end_of_word && (act_distance = current_row[current_row.size() - 1]) <= distance)
+    if (node.end_of_word && len == 0 && (act_distance = current_row[current_row.size() - 1]) <= distance)
     {
         json_data ret;
         ret.word = prefix;
