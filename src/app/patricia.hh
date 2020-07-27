@@ -37,15 +37,15 @@ public:
 
     // Memory
     int fd = -1;
+    void *mmap_pointer = nullptr;
+    size_t mmap_size = 0;
 
 
     ~Patricia()
     {
         trie_node_clean(root);
         close(fd);
-
-        munmap(table - size_of_table_size,
-                table_size + size_of_table_size);
+        munmap(mmap_pointer, mmap_size);
     }
     static constexpr size_t size_of_table_size = sizeof(Patricia::table_size);
 };

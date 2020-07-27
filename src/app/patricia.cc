@@ -51,22 +51,23 @@ static void skip_table(std::ifstream& input, uint32_t table_size)
 
 static void store_table(int fd, Patricia& patricia)
 {
-    //std::cerr << "sizeof table_size: " << Patricia::size_of_table_size << std::endl; // DEBUG
-    auto table = (char *) mmap(
+    size_t mmap_size = patricia.table_size + Patricia::size_of_table_size;
+    auto mmap_pointer = (char *) mmap(
             nullptr, // No address to start with
-            patricia.table_size + Patricia::size_of_table_size, // Size is table_size + 1
+            mmap_size, // Size is table_size + 1
             PROT_READ, // Read only
             MAP_PRIVATE, // No flag
             fd, // Read from input file
             // FIXME Seems like you cannot do it?
             //sizeof(patricia.table_size) // Skip size bytes
+            // Instead just take offset 0
             0
-    ) + Patricia::size_of_table_size;
-    //std::cerr << "table pointer: " << &table << std::endl; // DEBUG
-    //for (uint32_t i = 0; i < patricia.table_size; ++i) // DEBUG
-    //    std::cerr << "  i = " << i << ": " << table[i] << std::endl; // DEBUG
-    patricia.table = table;
+    );
     patricia.fd = fd;
+    patricia.mmap_pointer = mmap_pointer;
+    patricia.mmap_size = mmap_size;
+    patricia.table = mmap_pointer + Patricia::size_of_table_size;
+
 }
 
 [[maybe_unused]] static void store_table_input(std::ifstream& input, Patricia& patricia)
