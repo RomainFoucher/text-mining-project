@@ -2,6 +2,7 @@
 ref/
 words.txt
 *.bin
+*.log
 
 # CMake
 cmake-build-debug/

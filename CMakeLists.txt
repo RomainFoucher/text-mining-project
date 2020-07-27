@@ -10,7 +10,7 @@ message("set to ${CMAKE_BUILD_TYPE} mode")
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Ofast -march=native -fipa-pta -ftree-loop-linear -floop-strip-mine -floop-block -ftree-loop-if-convert -ftree-parallelize-loops=8")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -fno-inline -fno-builtin")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -fno-inline -fno-builtin -fsanitize=address")
 
 # Common library
 add_library(Common STATIC)

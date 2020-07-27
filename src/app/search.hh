@@ -1,9 +1,10 @@
 #pragma once
 
 
+#include "patricia.hh"
+
 #include <string>
 #include <set>
-#include "patricia.hh"
 
 
 struct json_data

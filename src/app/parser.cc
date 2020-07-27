@@ -1,9 +1,10 @@
+#include "parser.hh"
+#include "search.hh"
+
 #include <string>
 #include <iostream>
 #include <tuple>
 #include <sstream>
-#include "parser.hh"
-#include "search.hh"
 
 
 static void read_input_to_json(const Patricia& patricia, const std::string& word, uint8_t distance)
