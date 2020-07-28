@@ -6,6 +6,8 @@
 #include <iostream>
 
 
+using namespace app;
+
 static uint8_t* fill_row(uint8_t len, uint8_t* tab)
 {
     for (uint8_t i = 0; i < len + 1; i++)
@@ -89,7 +91,7 @@ static void recursive_search(const Patricia& p, const TrieNode& node, const std:
 }
 
 
-std::set<json_data, custom_compare> search(const Patricia& p, const std::string& word, uint8_t distance)
+std::set<json_data, custom_compare> app::search(const Patricia& p, const std::string& word, uint8_t distance)
 {
     std::set<json_data, custom_compare> results;
 
@@ -116,7 +118,7 @@ std::set<json_data, custom_compare> search(const Patricia& p, const std::string&
 }
 
 
-void print_json(const std::set<json_data, custom_compare>& res)
+void app::print_json(const std::set<json_data, custom_compare>& res)
 {
 
     std::cout << "[";

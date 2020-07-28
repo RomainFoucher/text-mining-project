@@ -3,4 +3,7 @@
 
 #include "patricia.hh"
 
-void read_inputs_to_json(const Patricia& patricia);
+namespace app
+{
+    void read_inputs_to_json(const Patricia& patricia);
+}

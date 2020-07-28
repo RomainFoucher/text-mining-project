@@ -7,8 +7,9 @@
 
 
 using namespace std;
+using namespace app;
 
-void trie_node_clean(TrieNode& root)
+void app::trie_node_clean(TrieNode& root)
 {
     for (size_t i = 0; i < root.nb_children; ++i)
         trie_node_clean(root.children[i].child);
@@ -77,7 +78,7 @@ static void store_table(int fd, Patricia& patricia)
 }
 
 
-Patricia get_patricia_from_file(char* input_name)
+Patricia app::get_patricia_from_file(char* input_name)
 {
     Patricia patricia;
 
@@ -108,7 +109,7 @@ static char get_char_from_table(const Patricia& patricia, uint32_t index)
     return patricia.table[index];
 }
 
-std::string get_string_from_table(const Patricia& patricia, uint32_t index, uint8_t len)
+std::string app::get_string_from_table(const Patricia& patricia, uint32_t index, uint8_t len)
 {
     std::string str;
     for (uint8_t i = 0; i < len; ++i)
@@ -116,7 +117,7 @@ std::string get_string_from_table(const Patricia& patricia, uint32_t index, uint
     return str;
 }
 
-char* get_chars_from_table(const Patricia& patricia, uint32_t index)
+char* app::get_chars_from_table(const Patricia& patricia, uint32_t index)
 {
     return patricia.table + index;
 }

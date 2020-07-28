@@ -7,6 +7,8 @@
 #include <sstream>
 
 
+using namespace app;
+
 static void read_input_to_json(const Patricia& patricia, const std::string& word, uint8_t distance)
 {
     print_json(search(patricia, word, distance));
@@ -39,7 +41,7 @@ static std::tuple<uint8_t, std::string> parse_input_string(const std::string& st
     return std::make_tuple(d, word);
 }
 
-void read_inputs_to_json(const Patricia& patricia)
+void app::read_inputs_to_json(const Patricia& patricia)
 {
     std::string line;
     while (std::getline(std::cin, line))
