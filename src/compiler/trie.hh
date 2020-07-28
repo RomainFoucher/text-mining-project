@@ -15,7 +15,7 @@ namespace trie
         uint32_t frequency;
     };
 
-    patricia::Patricia trie_merge(TrieNode *root);
+    patricia::Patricia trie_merge(TrieNode *, uint32_t&);
 
     void trie_insert(TrieNode *root, const std::string &word, uint32_t);
 

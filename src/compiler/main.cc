@@ -11,7 +11,8 @@ int main(int argc, char* argv[])
     //trie::trie_print(trie); // DEBUG
 
     std::cerr << "Generate Patricia :" << std::endl;
-    patricia::Patricia patricia_trie = trie::trie_merge(trie);
+    uint32_t nb_node = 0;
+    patricia::Patricia patricia_trie = trie::trie_merge(trie, nb_node);
     trie::trie_destroy(trie);
 
     //patricia::patricia_print(patricia_trie); // DEBUG
