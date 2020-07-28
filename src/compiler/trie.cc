@@ -3,7 +3,7 @@
 #include <iostream>
 
 
-namespace trie {
+namespace compiler::trie {
 
     std::pair<uint64_t , uint64_t> find_table_position(const std::string& str, std::string& table)
     {

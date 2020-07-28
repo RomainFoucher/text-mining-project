@@ -1,6 +1,9 @@
 #include "trie.hh"
 #include "parser.hh"
 
+
+using namespace compiler;
+
 int main(int argc, char* argv[])
 {
     if (argc != 3) return 1;

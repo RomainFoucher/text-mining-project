@@ -6,7 +6,7 @@
 
 #include "patricia.hh"
 
-namespace trie
+namespace compiler::trie
 {
     struct TrieNode
     {

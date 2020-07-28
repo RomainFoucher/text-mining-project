@@ -1,8 +1,9 @@
 #include "parser.hh"
 
 using namespace std;
+using namespace compiler;
 
-static trie::TrieNode *get_trie_node_from_file(std::ifstream& input)
+static trie::TrieNode* get_trie_node_from_file(std::ifstream& input)
 {
     string line;
 
@@ -31,7 +32,7 @@ static trie::TrieNode *get_trie_node_from_file(std::ifstream& input)
     return root;
 }
 
-trie::TrieNode *get_trie_from_file(char* input_name)
+trie::TrieNode *compiler::get_trie_from_file(char* input_name)
 {
     std::ifstream input_file(input_name);
     if (not input_file.is_open()) {
@@ -73,7 +74,7 @@ static void write_node(std::ofstream& output, const patricia::TrieNode* node)
     }
 }
 
-void patricia_write(const patricia::Patricia& trie, char* output_name)
+void compiler::patricia_write(const patricia::Patricia& trie, char* output_name)
 {
     std::ofstream output_file(output_name, std::ofstream::out | std::ofstream::binary);
     if (not output_file.is_open()) {
