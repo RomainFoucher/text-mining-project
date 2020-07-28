@@ -2,8 +2,7 @@
 
 #include <iostream>
 
-
-namespace patricia
+namespace compiler::patricia
 {
     std::string get_string_from_table(const std::string& table,
                                        uint32_t index, uint8_t len)
@@ -43,7 +42,7 @@ namespace patricia
         }
     }
 
-    void patricia_print(const Patricia& patricia)
+    [[maybe_unused]] void patricia_print(const Patricia& patricia)
     {
         std::cout << "digraph Trie {\n";
         std::cout << "    node [fontname=\"Arial\"];\n";
@@ -58,9 +57,5 @@ namespace patricia
         }
 
         std::cout << "}\n";
-    }
-    Patricia::Patricia()
-    {
-        root = new TrieNode();
     }
 }

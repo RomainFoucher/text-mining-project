@@ -5,7 +5,7 @@
 #include <string>
 #include <map>
 
-namespace patricia {
+namespace compiler::patricia {
     struct TrieNode;
 
     // TODO 32
@@ -28,16 +28,19 @@ namespace patricia {
     public:
         TrieNode *root;
         std::string table;
-        Patricia();
+        Patricia()
+        {
+            root = new TrieNode();
+        }
         ~Patricia()
         {
             trie_node_delete(root);
         }
     };
 
-    void patricia_print(const Patricia&);
+    [[maybe_unused]] void patricia_print(const Patricia&);
 
     std::string get_string_from_table(const std::string& table,
-            uint32_t index, uint32_t len);
+            uint32_t index, uint8_t len);
 }
 
