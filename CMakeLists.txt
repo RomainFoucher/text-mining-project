@@ -27,7 +27,7 @@ add_executable(TextMiningCompiler)
 target_sources(TextMiningCompiler PRIVATE
         src/compiler/main.cc
         src/compiler/parser.cc
-        src/compiler/patricia.cc
+        src/compiler/patricia_builder.cc
         src/compiler/trie.cc)
 target_include_directories(TextMiningCompiler PRIVATE
         src

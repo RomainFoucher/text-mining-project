@@ -1,7 +1,7 @@
 #pragma once
 
 #include "trie.hh"
-#include "patricia.hh"
+#include "patricia_builder.hh"
 
 #include <iostream>
 #include <fstream>
