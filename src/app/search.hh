@@ -7,37 +7,39 @@
 #include <set>
 
 
-struct json_data
+namespace app
 {
-    std::string word;
-    int8_t distance;
-    int32_t frequency;
-};
-
-
-struct custom_compare final
-{
-    bool operator() (const json_data& left, const json_data& right) const
+    struct json_data
     {
-        if (left.distance < right.distance)
-            return true;
-        else if (left.distance > right.distance)
-            return false;
-        else
+        std::string word;
+        int8_t distance;
+        int32_t frequency;
+    };
+
+
+    struct custom_compare final
+    {
+        bool operator()(const json_data& left, const json_data& right) const
         {
-            if (left.frequency > right.frequency)
+            if (left.distance < right.distance)
                 return true;
-            else if (left.frequency < right.frequency)
+            else if (left.distance > right.distance)
                 return false;
             else
-                return left.word < right.word;
+            {
+                if (left.frequency > right.frequency)
+                    return true;
+                else if (left.frequency < right.frequency)
+                    return false;
+                else
+                    return left.word < right.word;
+            }
+
         }
-
-    }
-};
+    };
 
 
+    void print_json(const std::set<json_data, custom_compare>& res);
 
-void print_json(const std::set<json_data, custom_compare>& res);
-std::set<json_data, custom_compare> search(const Patricia& p, const std::string& word, uint8_t distance);
-
+    std::set<json_data, custom_compare> search(const Patricia& p, const std::string& word, uint8_t distance);
+}
