@@ -6,24 +6,23 @@
 #include <iostream>
 
 
-static std::vector<uint8_t> make_row(uint8_t len)
+static uint8_t* fill_row(uint8_t len, uint8_t* tab)
 {
-    auto vec = std::vector<uint8_t >();
     for (uint8_t i = 0; i < len + 1; i++)
     {
-        vec.emplace_back(i);
+        tab[i] = i;
     }
-    return vec;
+    return tab;
 }
 
 
 static void recursive_search(const Patricia& p, const TrieNode& node, const std::string& prefix, char ch, char prev_ch,
-        const std::string& word, const std::vector<uint8_t >& prev_row, const std::vector<uint8_t>& pre_prev_row,
+        const std::string& word, const uint8_t* prev_row, const uint8_t* pre_prev_row,
         std::set<json_data, custom_compare>& results, uint8_t distance, uint8_t len, char* str)
 {
     // Init
     uint8_t columns = word.size() + 1;
-    auto current_row = std::vector<uint8_t>(word.size() + 1, 0);
+    uint8_t current_row[256];
     current_row[0] = prev_row[0] + 1;
 
     // Fill current_row
@@ -47,7 +46,7 @@ static void recursive_search(const Patricia& p, const TrieNode& node, const std:
 
     // Fill results
     uint8_t act_distance;
-    if (node.end_of_word && len == 0 && (act_distance = current_row[current_row.size() - 1]) <= distance)
+    if (node.end_of_word && len == 0 && (act_distance = current_row[word.size()]) <= distance)
     {
         json_data ret;
         ret.word = prefix;
@@ -57,7 +56,7 @@ static void recursive_search(const Patricia& p, const TrieNode& node, const std:
     }
 
     // Call recursively
-    if (*std::min_element(current_row.begin(), current_row.end()) <= distance)
+    if (*std::min_element(current_row, current_row + word.size() + 1) <= distance)
     {
         if (len != 0)
         {
@@ -93,8 +92,10 @@ static void recursive_search(const Patricia& p, const TrieNode& node, const std:
 std::set<json_data, custom_compare> search(const Patricia& p, const std::string& word, uint8_t distance)
 {
     std::set<json_data, custom_compare> results;
-    auto current_row = make_row(word.size());
-    auto prev_row = std::vector<uint8_t>();
+
+    uint8_t current_row[256];
+    fill_row(word.size(), current_row);
+    uint8_t prev_row[256];
     for (uint8_t i = 0; i < p.root.nb_children; i++)
     {
         char ch = p.root.children[i].next_char;
