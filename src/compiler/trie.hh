@@ -4,7 +4,7 @@
 #include <map>
 #include <vector>
 
-#include "patricia.hh"
+#include "patricia_builder.hh"
 
 namespace compiler::trie
 {
