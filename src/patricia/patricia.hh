@@ -9,7 +9,7 @@
 #include <sys/mman.h>
 
 
-namespace app
+namespace common
 {
     struct Data;
 

@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include "patricia.hh"
+#include "patricia/patricia.hh"
 
 #include <string>
 #include <set>
@@ -41,5 +41,5 @@ namespace app
 
     void print_json(const std::set<json_data, custom_compare>& res);
 
-    std::set<json_data, custom_compare> search(const Patricia& p, const std::string& word, uint8_t distance);
+    std::set<json_data, custom_compare> search(const common::Patricia& p, const std::string& word, uint8_t distance);
 }

@@ -15,9 +15,9 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -fno-inline -fno-builtin
 # Common library
 add_library(Common STATIC)
 target_sources(Common PRIVATE
-        src/bst.cc)
+        src/patricia/patricia.cc)
 target_include_directories(Common PRIVATE
-        src)
+        src/patricia)
 target_compile_options(Common PRIVATE
         -Wall -Wextra -pedantic)
 
@@ -30,8 +30,8 @@ target_sources(TextMiningCompiler PRIVATE
         src/compiler/patricia_builder.cc
         src/compiler/trie.cc)
 target_include_directories(TextMiningCompiler PRIVATE
-        src
-        src/compiler)
+        src/compiler
+        src)
 target_link_libraries(TextMiningCompiler PRIVATE
         Common)
 target_compile_options(TextMiningCompiler PRIVATE
@@ -43,11 +43,10 @@ add_executable(TextMiningApp)
 target_sources(TextMiningApp PRIVATE
         src/app/main.cc
         src/app/parser.cc
-        src/app/patricia.cc
         src/app/search.cc)
 target_include_directories(TextMiningApp PRIVATE
-        src
-        src/app)
+        src/app
+        src)
 target_link_libraries(TextMiningApp PRIVATE
         Common)
 target_compile_options(TextMiningApp PRIVATE
