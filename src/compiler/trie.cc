@@ -40,10 +40,11 @@ namespace trie {
         }
     }
 
-    void rec_merge_multi_nodes(trie::TrieNode *node, patricia::TrieNode *p, std::string& table)
+    void rec_merge_multi_nodes(trie::TrieNode *node, patricia::TrieNode *p, std::string& table, uint32_t & nb_node)
     {
         p->end_of_word = node->end_of_word;
         p->frequency = node->frequency;
+        nb_node += node->children.size();
         for (const auto &i : node->children)
         {
 
@@ -67,15 +68,15 @@ namespace trie {
             p->children[value[0]] = nw_dt;
 
             // Call recursively
-            rec_merge_multi_nodes(next_node, nw_node, table);
+            rec_merge_multi_nodes(next_node, nw_node, table, nb_node);
         }
     }
 
 
-    patricia::Patricia trie_merge(TrieNode *root)
+    patricia::Patricia trie_merge(TrieNode* root, uint32_t& nb_node)
     {
         patricia::Patricia p = patricia::Patricia();
-        rec_merge_multi_nodes(root, p.root, p.table);
+        rec_merge_multi_nodes(root, p.root, p.table, nb_node);
         return p;
     }
 
