@@ -1,7 +1,8 @@
-#include "patricia.hh"
+#include "patricia/patricia.hh"
 #include "parser.hh"
 
 using namespace app;
+using namespace common;
 
 int main(int argc, char* argv[])
 {

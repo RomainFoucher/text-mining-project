@@ -1,9 +1,9 @@
 #pragma once
 
 
-#include "patricia.hh"
+#include "patricia/patricia.hh"
 
 namespace app
 {
-    void read_inputs_to_json(const Patricia& patricia);
+    void read_inputs_to_json(const common::Patricia& patricia);
 }
