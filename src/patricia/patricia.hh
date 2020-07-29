@@ -15,12 +15,13 @@ namespace common
 
     struct TrieNode
     {
-        bool end_of_word = false;
         uint32_t frequency = 0;
         // Array of Data
         uint8_t nb_children = 0;
         struct Data* children = nullptr;
     };
+
+    bool end_of_word(const TrieNode&);
 
 // TODO 32
     struct Data
