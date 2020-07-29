@@ -10,6 +10,11 @@ using namespace std;
 
 namespace common
 {
+    bool end_of_word(const TrieNode& node)
+    {
+        return node.frequency;
+    }
+
     void trie_node_clean(TrieNode& root)
     {
         for (size_t i = 0; i < root.nb_children; ++i)
@@ -19,14 +24,14 @@ namespace common
 
 
     template<typename T>
-    static void read_(std::ifstream& input, T& elm)
+    static void read_(std::ifstream& input, const T& elm)
     {
         input.read((char*) &elm, sizeof(elm));
     }
 
     static void store_node(std::ifstream& input, TrieNode& root)
     {
-        read_(input, root.end_of_word);
+        read_(input, end_of_word(root));
         read_(input, root.frequency);
         read_(input, root.nb_children);
         root.children = new struct Data[root.nb_children];
@@ -128,7 +133,7 @@ namespace common
                                        const Patricia& patricia, unsigned& nb)
     {
         unsigned i = nb;
-        std::string color = node.end_of_word ? "cyan" : "white";
+        std::string color = end_of_word(node) ? "cyan" : "white";
         std::string label = node.frequency ? std::to_string(node.frequency) : "";
         std::cout << "    " << nb << " ["
                   << " label=\"" << label << "\""

@@ -44,7 +44,11 @@ namespace app
             current_row[col] = std::min({insert_val, delete_val, replace_val});
 
             // swap
-            if (prev_ch != 0 && col - 1 > 0 && ch == word[col - 2] && prev_ch == word[col - 1] && word[col - 1] != ch)
+            if (prev_ch != 0
+                    && col - 1 > 0
+                    && ch == word[col - 2]
+                    && prev_ch == word[col - 1]
+                    && word[col - 1] != ch)
             {
                 current_row[col] = std::min<uint8_t>(current_row[col], pre_prev_row[col - 2] + 1);
             }
@@ -52,7 +56,9 @@ namespace app
 
         // Fill results
         uint8_t act_distance;
-        if (node.end_of_word && len == 0 && (act_distance = current_row[word.size()]) <= distance)
+        if (end_of_word(node)
+                && len == 0
+                && (act_distance = current_row[word.size()]) <= distance)
         {
             json_data ret;
             ret.word = prefix;
