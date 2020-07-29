@@ -60,9 +60,10 @@ namespace common
 
     Patricia get_patricia_from_file(char*);
 
-    void patricia_print(const Patricia& patricia);
-
     std::string get_string_from_table(const Patricia&, uint32_t index, uint8_t len);
 
     char* get_chars_from_table(const Patricia&, uint32_t index);
+
+    /* DEBUG */
+    [[maybe_unused]] void patricia_print(const Patricia& patricia);
 }

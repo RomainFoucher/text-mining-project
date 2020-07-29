@@ -133,7 +133,7 @@ namespace compiler::trie {
         }
     }
 
-    void trie_print(const TrieNode *root)
+    [[maybe_unused]] void trie_print(const TrieNode *root)
     {
         std::cout << "digraph Trie {\n";
         std::cout << "    node [fontname=\"Arial\"];\n";
