@@ -10,10 +10,11 @@ namespace compiler::trie
 {
     struct TrieNode
     {
+        uint32_t frequency = 0;
         std::map<std::string, TrieNode*> children;
-        bool end_of_word = false;
-        uint32_t frequency;
     };
+
+    bool end_of_word(const TrieNode&);
 
     patricia::Patricia trie_merge(TrieNode *, uint32_t&);
 
