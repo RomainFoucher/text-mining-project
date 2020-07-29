@@ -39,9 +39,10 @@ namespace compiler::patricia {
         }
     };
 
-    [[maybe_unused]] void patricia_print(const Patricia&);
-
     std::string get_string_from_table(const std::string& table,
             uint32_t index, uint8_t len);
+
+    /* DEBUG */
+    [[maybe_unused]] void patricia_print(const Patricia&);
 }
 

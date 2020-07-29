@@ -22,5 +22,6 @@ namespace compiler::trie
 
     void trie_destroy(struct TrieNode* root);
 
-    void trie_print(const TrieNode *root);
+    /* DEBUG */
+    [[maybe_unused]] void trie_print(const TrieNode *root);
 }

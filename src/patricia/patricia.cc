@@ -152,7 +152,7 @@ namespace common
         }
     }
 
-    void patricia_print(const Patricia& patricia)
+    [[maybe_unused]] void patricia_print(const Patricia& patricia)
     {
         std::cout << "digraph Trie {\n";
         std::cout << "    node [fontname=\"Arial\"];\n";
