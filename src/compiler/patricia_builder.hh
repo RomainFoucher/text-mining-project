@@ -10,17 +10,18 @@ namespace compiler::patricia {
 
     // TODO 32
     struct Data {
-        uint32_t index;
+        uint32_t index = 0;
         // 256 character MAX
-        uint8_t len;
-        TrieNode* child;
+        uint8_t len = 0;
+        TrieNode* child = nullptr;
     };
 
     struct TrieNode {
-        bool end_of_word = false;
         uint32_t frequency = 0;
         std::map<char, Data> children;
     };
+
+    bool end_of_word(const TrieNode&);
 
     void trie_node_delete(TrieNode*);
 

@@ -5,6 +5,11 @@
 
 namespace compiler::trie {
 
+    bool end_of_word(const TrieNode& node)
+    {
+        return node.frequency;
+    }
+
     std::pair<uint64_t , uint64_t> find_table_position(const std::string& str, std::string& table)
     {
         if (str.empty())
@@ -25,7 +30,7 @@ namespace compiler::trie {
 
     trie::TrieNode* rec_merge_single_node(trie::TrieNode* node, std::string& str) // return a multi node
     {
-        if (node->end_of_word)
+        if (end_of_word(*node))
         {
             return node;
         }
@@ -42,7 +47,6 @@ namespace compiler::trie {
 
     void rec_merge_multi_nodes(trie::TrieNode *node, patricia::TrieNode *p, std::string& table, uint32_t & nb_node)
     {
-        p->end_of_word = node->end_of_word;
         p->frequency = node->frequency;
         nb_node += node->children.size();
         for (const auto &i : node->children)
@@ -95,7 +99,6 @@ namespace compiler::trie {
             }
             current = node;
         }
-        current->end_of_word = true;
         current->frequency = freq;
     }
 
@@ -112,7 +115,7 @@ namespace compiler::trie {
     static void trie_print_dot_aux(const TrieNode *node, unsigned &nb)
     {
         unsigned i = nb;
-        std::string color = node->end_of_word ? "cyan" : "white";
+        std::string color = end_of_word(*node) ? "cyan" : "white";
         std::string label = node->frequency ? std::to_string(node->frequency) : "";
 
         std::cout << "    " << nb << " ["

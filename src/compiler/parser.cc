@@ -62,7 +62,7 @@ static void write_table(std::ofstream& output, const string& table)
 
 static void write_node(std::ofstream& output, const patricia::TrieNode* node)
 {
-    write_(output, node->end_of_word);
+    write_(output, end_of_word(*node));
     write_(output, node->frequency);
     write_(output, (uint8_t) node->children.size());
     for (const auto&[c, data] : node->children)

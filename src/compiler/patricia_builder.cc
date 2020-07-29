@@ -4,6 +4,11 @@
 
 namespace compiler::patricia
 {
+    bool end_of_word(const TrieNode& node)
+    {
+        return node.frequency;
+    }
+
     std::string get_string_from_table(const std::string& table,
                                        uint32_t index, uint8_t len)
     {
@@ -24,7 +29,7 @@ namespace compiler::patricia
             const std::string& table, unsigned &nb)
     {
         unsigned i = nb;
-        std::string color = node->end_of_word ? "cyan" : "white";
+        std::string color = end_of_word(*node) ? "cyan" : "white";
         std::string label = node->frequency ? std::to_string(node->frequency) : "";
         std::cout << "    " << nb << " ["
                   << " label=\"" << label << "\""
