@@ -47,11 +47,11 @@ namespace compiler::trie {
 
     void rec_merge_multi_nodes(trie::TrieNode *node, patricia::TrieNode *p, std::string& table, uint32_t & nb_node)
     {
+        p->id = nb_node;
         p->frequency = node->frequency;
-        nb_node += node->children.size();
         for (const auto &i : node->children)
         {
-
+            nb_node += 1;
             // Create new patricia node
             auto* nw_node = new patricia::TrieNode();
             std::string value({i.first[0]});
@@ -81,6 +81,7 @@ namespace compiler::trie {
     {
         patricia::Patricia p = patricia::Patricia();
         rec_merge_multi_nodes(root, p.root, p.table, nb_node);
+        ++nb_node;
         return p;
     }
 

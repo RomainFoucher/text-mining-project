@@ -20,7 +20,7 @@ namespace compiler::patricia
         for (const auto &i : root->children) {
             trie_node_delete(i.second.child);
         }
-        delete (root);
+        delete root;
     }
 
 

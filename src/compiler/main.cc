@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
     //std::cerr << "table: " << patricia_trie.table << std::endl; // DEBUG
 
     std::cerr << "Write Patricia :" << std::endl;
-    patricia_write(patricia_trie, argv[2]);
+    patricia_write(argv[2], patricia_trie, nb_node);
 
     return 0;
 }

@@ -17,6 +17,7 @@ namespace compiler::patricia {
     };
 
     struct TrieNode {
+        uint32_t id{};
         uint32_t frequency = 0;
         std::map<char, Data> children;
     };

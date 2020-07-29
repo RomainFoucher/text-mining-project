@@ -57,7 +57,7 @@ namespace app
         // Fill results
         uint8_t act_distance;
         if (end_of_word(node)
-                && len == 0
+                && len == 1
                 && (act_distance = current_row[word.size()]) <= distance)
         {
             json_data ret;
@@ -70,29 +70,24 @@ namespace app
         // Call recursively
         if (*std::min_element(current_row, current_row + word.size() + 1) <= distance)
         {
-            if (len != 0)
+            if (len > 1)
             {
-                char new_ch = str[0];
+                char new_ch = str[1];
                 recursive_search(p, node, prefix + new_ch, new_ch, ch, word, current_row, prev_row, results,
                                  distance, len - 1, str + 1);
-            } else
+            }
+            else
             {
                 for (uint8_t i = 0; i < node.nb_children; i++)
                 {
+                    auto dt = get_data_i(p, node, i);
+                    auto chrs = get_chars(p, dt);
+                    char new_ch = chrs[0];
+                    const TrieNode& new_nd = get_child(p, dt);
+                    uint8_t new_len = dt.chars_size;
+                    recursive_search(p, new_nd, prefix + new_ch, new_ch, ch, word, current_row, prev_row, results,
+                            distance, new_len, chrs);
 
-                    char new_ch = node.children[i].next_char;
-                    const TrieNode& new_nd = node.children[i].child;
-                    uint8_t new_len = node.children[i].len;
-                    if (new_len == 0)
-                    {
-                        recursive_search(p, new_nd, prefix + new_ch, new_ch, ch, word, current_row, prev_row, results,
-                                         distance, 0, nullptr);
-                    } else
-                    {
-                        char* new_str = get_chars_from_table(p, node.children[i].index);
-                        recursive_search(p, new_nd, prefix + new_ch, new_ch, ch, word, current_row, prev_row, results,
-                                         distance, new_len, new_str);
-                    }
                 }
             }
         }
@@ -108,19 +103,13 @@ namespace app
         uint8_t prev_row[256];
         for (uint8_t i = 0; i < p.root.nb_children; i++)
         {
-            char ch = p.root.children[i].next_char;
-            const TrieNode& node = p.root.children[i].child;
+            auto dt = get_data_i(p, p.root, i);
+            auto chrs = get_chars(p, dt);
+            const TrieNode& node = get_child(p, dt);
+            char ch = chrs[0];
             std::string prefix(1, ch);
-            uint8_t new_len = p.root.children[i].len;
-            if (new_len == 0)
-            {
-                recursive_search(p, node, prefix, ch, 0, word, current_row, prev_row, results, distance, 0, nullptr);
-            } else
-            {
-                char* new_str = get_chars_from_table(p, p.root.children[i].index);
-                recursive_search(p, node, prefix, ch, 0, word, current_row, prev_row, results, distance, new_len,
-                                 new_str);
-            }
+            uint8_t new_len = dt.chars_size;
+            recursive_search(p, node, prefix, ch, 0, word, current_row, prev_row, results, distance, new_len, chrs);
         }
         return results;
     }

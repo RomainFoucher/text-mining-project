@@ -14,29 +14,22 @@ Dictionary grammar
 -------------------
 
 file =
-    table trie_node
-
-
-table =
-    table_size chars
-
-table_size = uint32
-chars = (char)* '\0'
-
+    (trie_node)+ (data)* (char)*
 
 trie_node =
-    end_of_word frequency nb_children (data)*
+    frequency nb_children data_offset
 
-end_of_word = bool
 frequency = uint_32
 nb_children = uint8_t
+data_offset = uint64_t
 
 data =
-    next_char index len trie_node
+    next_node_offset chars_size chars_offset
 
-next_char = char
-index = uint32_t
-len = uint8_t
+
+next_node_offset = uint64_t
+chars_size = uint8_t
+chars_offset = uint64_t
 
 
 

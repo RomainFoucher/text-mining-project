@@ -11,58 +11,53 @@
 
 namespace common
 {
-    struct Data;
-
     struct TrieNode
     {
+        uint64_t data_offset = 0;
         uint32_t frequency = 0;
-        // Array of Data
         uint8_t nb_children = 0;
-        struct Data* children = nullptr;
+        // Padding
+        uint8_t padding_1{};
+        uint16_t padding_2{};
     };
 
     bool end_of_word(const TrieNode&);
 
-// TODO 32
     struct Data
     {
-        char next_char{};
-        uint32_t index{};
-        uint8_t len{};
-        TrieNode child;
+        uint64_t next_node_offset = 0;
+        uint64_t chars_offset = 0;
+        uint8_t chars_size = 0;
+        // Padding
+        uint8_t padding_1{};
+        uint16_t padding_2{};
+        uint32_t padding_3{};
     };
-
-    void trie_node_clean(TrieNode&);
 
     class Patricia
     {
     public:
         TrieNode root;
-        // Array of char
-        uint32_t table_size = 0;
-        char* table = nullptr;
 
         // Memory
         int fd = -1;
-        void* mmap_pointer = nullptr;
+        char* mmap_pointer = nullptr;
         size_t mmap_size = 0;
-
 
         ~Patricia()
         {
-            trie_node_clean(root);
             close(fd);
             munmap(mmap_pointer, mmap_size);
         }
-
-        static constexpr size_t size_of_table_size = sizeof(Patricia::table_size);
     };
 
     Patricia get_patricia_from_file(char*);
 
-    std::string get_string_from_table(const Patricia&, uint32_t index, uint8_t len);
+    Data get_data_i(const Patricia&, const TrieNode&, uint8_t child_nb);
 
-    char* get_chars_from_table(const Patricia&, uint32_t index);
+    char* get_chars(const Patricia&, const Data&);
+
+    TrieNode get_child(const Patricia&, const Data&);
 
     /* DEBUG */
     [[maybe_unused]] void patricia_print(const Patricia& patricia);

@@ -11,5 +11,6 @@ namespace compiler
 {
     trie::TrieNode* get_trie_from_file(char*);
 
-    void patricia_write(const patricia::Patricia&, char*);
+    void patricia_write(char*, const patricia::Patricia&, uint32_t nb_node);
+
 }

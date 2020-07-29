@@ -1,9 +1,9 @@
 #include "patricia.hh"
 
-#include <fstream>
 #include <iostream>
-#include <sys/mman.h>
 #include <fcntl.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
 
 
 using namespace std;
@@ -15,120 +15,65 @@ namespace common
         return node.frequency;
     }
 
-    void trie_node_clean(TrieNode& root)
+    static void load_patricia(Patricia& patricia, int fd)
     {
-        for (size_t i = 0; i < root.nb_children; ++i)
-            trie_node_clean(root.children[i].child);
-        delete[] root.children;
-    }
+        struct stat st{};
+        fstat(fd, &st);
 
-
-    template<typename T>
-    static void read_(std::ifstream& input, const T& elm)
-    {
-        input.read((char*) &elm, sizeof(elm));
-    }
-
-    static void store_node(std::ifstream& input, TrieNode& root)
-    {
-        read_(input, end_of_word(root));
-        read_(input, root.frequency);
-        read_(input, root.nb_children);
-        root.children = new struct Data[root.nb_children];
-
-        for (uint8_t i = 0; i < root.nb_children; ++i)
-        {
-            Data& data = root.children[i];
-            read_(input, data.next_char);
-            read_(input, data.index);
-            read_(input, data.len);
-            store_node(input, data.child);
-        }
-    }
-
-    static void store_table_size(std::ifstream& input, uint32_t& table_size)
-    {
-        read_(input, table_size);
-    }
-
-    static void skip_table(std::ifstream& input, uint32_t table_size)
-    {
-        input.ignore(table_size);
-    }
-
-    static void store_table(int fd, Patricia& patricia)
-    {
-        size_t mmap_size = patricia.table_size + Patricia::size_of_table_size;
-        auto mmap_pointer = (char*) mmap(
-                nullptr, // No address to start with
-                mmap_size, // Size is table_size + 1
-                PROT_READ, // Read only
-                MAP_PRIVATE, // No flag
-                fd, // Read from input file
-                // FIXME Seems like you cannot do it?
-                //sizeof(patricia.table_size) // Skip size bytes
-                // Instead just take offset 0
-                0
-        );
         patricia.fd = fd;
-        patricia.mmap_pointer = mmap_pointer;
-        patricia.mmap_size = mmap_size;
-        patricia.table = mmap_pointer + Patricia::size_of_table_size;
-
+        patricia.mmap_size = st.st_size;
+        patricia.mmap_pointer = (char*) mmap(
+                nullptr, // No address to start with
+                patricia.mmap_size, // Size is table_size + 1
+                PROT_READ, // Read only
+                MAP_PRIVATE, // Private
+                fd, // Read from input file
+                0 // No offset
+        );
     }
 
-    [[maybe_unused]] static void store_table_input(std::ifstream& input, Patricia& patricia)
+    static void load_root(Patricia& patricia)
     {
-        patricia.table = new char[patricia.table_size];
-        input.read(patricia.table, patricia.table_size);
+        TrieNode& root = patricia.root;
+        root = *reinterpret_cast<TrieNode*>(patricia.mmap_pointer);
     }
-
 
     Patricia get_patricia_from_file(char* input_name)
     {
         Patricia patricia;
 
-        std::ifstream input(input_name, std::ifstream::binary | std::ifstream::in);
-        if (not input.is_open())
+        int fd = open(input_name, O_RDONLY);
+        if (fd == -1)
             std::cerr << "Cannot open " << input_name << '\n';
         else
         {
-            store_table_size(input, patricia.table_size);
-            //std::cerr << "table size: " << patricia.table_size << std::endl; // DEBUG
-            skip_table(input, patricia.table_size);
-            store_node(input, patricia.root);
-
-            input.close();
-
-            int fd = open(input_name, O_RDONLY);
-            if (fd == -1)
-                std::cerr << "Cannot open " << input_name << '\n';
-            else
-                store_table(fd, patricia);
+            load_patricia(patricia, fd);
+            load_root(patricia);
         }
         return patricia;
     }
 
-    static char get_char_from_table(const Patricia& patricia, uint32_t index)
+    Data get_data_i(const Patricia& patricia, const TrieNode& node, uint8_t child_nb)
     {
-        // std::cerr << patricia.table[index] << std::endl; DEBUG
-        return patricia.table[index];
+        return *reinterpret_cast<Data*>(
+                patricia.mmap_pointer + node.data_offset + sizeof(Data) * (size_t) child_nb
+        );
     }
 
-    std::string get_string_from_table(const Patricia& patricia, uint32_t index, uint8_t len)
+    char* get_chars(const Patricia& patricia, const Data& data)
     {
-        std::string str;
-        for (uint8_t i = 0; i < len; ++i)
-            str.push_back(get_char_from_table(patricia, index + i));
-        return str;
+        return patricia.mmap_pointer + data.chars_offset;
     }
 
-    char* get_chars_from_table(const Patricia& patricia, uint32_t index)
+    TrieNode get_child(const Patricia& patricia, const Data& data)
     {
-        return patricia.table + index;
+        return *reinterpret_cast<TrieNode*>(
+                patricia.mmap_pointer + data.next_node_offset
+        );
     }
 
-/* DEBUG */
+
+    /* DEBUG */
     static void patricia_print_dot_aux(const TrieNode& node,
                                        const Patricia& patricia, unsigned& nb)
     {
@@ -142,13 +87,14 @@ namespace common
                   << " ]\n";
         for (uint8_t child_i = 0; child_i < node.nb_children; ++child_i)
         {
-            const Data& data = node.children[child_i];
             ++nb;
-            std::string link_str{data.next_char};
-            auto node_str = get_string_from_table(patricia, data.index, data.len);
+            const Data data = get_data_i(patricia, node, child_i);
+            std::string link_str(get_chars(patricia, data), data.chars_size);
+
             std::cout << "    " << i << " -> " << nb
-                      << " [label  = \"" << link_str << node_str << "\"]\n";
-            patricia_print_dot_aux(data.child, patricia, nb);
+                      << " [label  = \"" << link_str << "\"]\n";
+            auto child = get_child(patricia, data);
+            patricia_print_dot_aux(child, patricia, nb);
         }
     }
 
