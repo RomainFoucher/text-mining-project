@@ -121,13 +121,12 @@ namespace app
 
     void print_json(const std::set<json_data, custom_compare>& res)
     {
-
         std::cout << "[";
-        if (res.size() != 0)
+        if (!res.empty())
         {
             auto it = res.begin();
             std::cout << "{";
-            std::cout << "\"word\":\"" << (*it).word << "\",";
+            std::cout << R"("word":")" << (*it).word << "\",";
             std::cout << "\"freq\":" << (*it).frequency << ",";
             std::cout << "\"distance\":" << (int) (*it).distance << "";
             std::cout << "}";
@@ -135,7 +134,7 @@ namespace app
             for (; it != res.end(); ++it)
             {
                 std::cout << ",{";
-                std::cout << "\"word\":\"" << (*it).word << "\",";
+                std::cout << R"("word":")" << (*it).word << "\",";
                 std::cout << "\"freq\":" << (*it).frequency << ",";
                 std::cout << "\"distance\":" << (int) (*it).distance << "";
                 std::cout << "}";
