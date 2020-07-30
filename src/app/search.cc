@@ -20,6 +20,10 @@ namespace app
         return tab;
     }
 
+    uint8_t smallest(uint8_t x, uint8_t y, uint8_t z){
+        return x < y ? (x < z ? x : z) : (y < z ? y : z);
+    }
+
 
     static void
     recursive_search(const Patricia& p, const TrieNode& node, const std::string& prefix, char ch, char prev_ch,
@@ -41,7 +45,7 @@ namespace app
                 replace_val = prev_row[col - 1] + 1;
             else
                 replace_val = prev_row[col - 1];
-            current_row[col] = std::min({insert_val, delete_val, replace_val});
+            current_row[col] = smallest(insert_val, delete_val, replace_val);
 
             // swap
             if (prev_ch != 0
