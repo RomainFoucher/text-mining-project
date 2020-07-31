@@ -40,3 +40,61 @@ cd ./test
 ./init_testsuite.sh
 (anytime:)
 ./test.sh
+
+
+Questions :
+
+1. Decrivez les choix de design de votre programme
+
+Notre programme permet une correction orthographique rapide en utilisant le moins de RAM possible. Pour ce faire, nous avons utilisé un patricia trie (même structure de donnée que vue en cours) et la distance de Damerau-Levenshtein pour comparer les mots entre eux lors du parcours de l'arbre.
+
+L'objectif étant de prendre peu de RAM, nous avons décidé de mettre le patricia trie sur dick. De ce faite, la lecture disck est un peu plus lente mais on n'utilise pas de RAM.
+
+Pour la recherche, on parcourt récursivement l'arbre  de façon à éviter les parcours inutiles en ignorant certaines branches de l'arbre qui ne peuvent pas être atteintes.
+
+Dans cette recherche, on utilise l'algorithme vu en cours (en ayant recours à une matrice) d'une manière une peu différente. On calcule, à chaque noeud la ligne associé à la lettre actuelle. De cette manière, lorsqu'on parcourt récursivement l'arbre, on ne recalcule jamais la même ligne deux fois.
+
+2. Listez l’ensemble des tests effectués sur votre programme (en plus des units tests)
+
+L'ensemble des testes effectués portent sur :
+
+    - la bonne construction du trie (fonction de print au format .dot),
+    - la bonne construction du patricia trie builder (fonction de print au format .dot),
+    - la bonne construction du patricia trie (fonction de print au format .dot),
+    - test suite de performance contre la référence,
+    - test suite de la validité des résultats contre la référence,
+    - test suite de la validité des résultats pour les cas spéciaux.
+
+3. Avez-vous détecté des cas où la correction par distance ne fonctionnait pas (même avec une distance élevée) ?
+
+Lors de nos tests, nous n'avons pas détecter de cas ou la corrélation par distance ne fonctionnait pas.
+
+ 4.	Quelle est la structure de données que vous avez implémentée dans votre projet, pourquoi ?
+
+Notre objectif est de faire la recherche la plus rapide. Il nous fallait donc un arbre. Le premier arbre que nosu avons implémenté était un trie. C'est une structure de donnée simple mais efficace. Pour optimiser ce trie et gagner en prermorfances, nous avons modifié cette structure de donnée pour un patricia trie. Cela permet, de compacter les noeuds avec un seul fils. Ainsi, on gagne en performance : on accède à moins de noeuds pour arriver à un résultat et l'arbre est plus léger.
+
+ 5.	Proposez un réglage automatique de la distance pour un programme qui prend juste une chaîne de caractères en entrée, donner le processus d’évaluation ainsi que les résultats
+
+Pour régler automatiquement la distance, nous pourrions prendre comme valeure de distance la racine carré (arrondie à l'unité  suppérieur) de la longueure du mot recherché. En effet, on considère qu'une grande partie des lettres du mot sont bonnes : on considère que les erreures de l'utilisateur sont limitées et qu'il serait innutile de corriger un mot non reconnaissable.
+
+ 6.	Comment comptez vous améliorer les performances de votre programme
+
+Notre compilateur n'est pas optimiser. En effet, un premier trie est créé et celui-ci est transformé en patricia trie. Nous avons donc deux problèmes : la consommation mémoire ses deux arbres et le temps les générer.
+
+Au niveau de l'application, nous pouvons également optimiser plusieurs points. Tout d'abord, lorsque nous explorons l'arbre sur disk, nous ne conservons pas les données necessaires au parcourt en RAM. Nous avons donc des problèmes de performance lorsque beaucoup de requêtes similaires sont effectuées. Une autre optimisation serait de multithreader les requêtes.
+
+ 7.	Que manque-t-il à votre correcteur orthographique pour qu’il soit à l’état de l’art ?
+
+Pour être à l'état de l'art, il manque la détection de plusieurs choses à notre programme :
+
+    - les erreurs phonétiques
+    - les erreurs liées à la normalisations des dictionnaires
+    - les ressemblances entre plusieurs lettres
+    - les mots coupé en deux (exemple : bon jour)
+
+
+AUTHORS
+
+FOUCHER Romain fouche_r
+
+PAUL Adrien paul_c
