@@ -30,7 +30,7 @@ namespace common
      * @param node the node to check.
      * @return the boolean value.
      */
-    bool end_of_word(const TrieNode& node);
+    bool end_of_word(const TrieNode* node);
 
     /*!
      * Struct representing the link between two nodes.
@@ -86,7 +86,7 @@ namespace common
      * @param child_nb index of the child. Within 0 and node.nb_children.
      * @return the data.
      */
-    Data get_data_i(const Patricia& patricia, const TrieNode& node, uint8_t child_nb);
+    Data* get_data_i(const Patricia& patricia, uint64_t data_offset, uint8_t child_nb);
 
     /*!
      * Get char pointer corresponding to a data.
@@ -95,7 +95,7 @@ namespace common
      * @param data the data to get char pointer from.
      * @return the char pointer.
      */
-    char* get_chars(const Patricia& patricia, const Data& data);
+    char* get_chars(const Patricia& patricia, uint64_t chars_offset);
 
     /*!
      * Get child from a data.
@@ -104,7 +104,7 @@ namespace common
      * @param data the data to get node from.
      * @return the child node.
      */
-    TrieNode get_child(const Patricia& patricia, const Data& data);
+    TrieNode* get_child(const Patricia& patricia, uint64_t next_node_offset);
 
     /* DEBUG */
     /*!

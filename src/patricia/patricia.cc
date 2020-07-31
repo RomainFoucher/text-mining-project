@@ -10,9 +10,9 @@ using namespace std;
 
 namespace common
 {
-    bool end_of_word(const TrieNode& node)
+    bool end_of_word(const TrieNode* node)
     {
-        return node.frequency;
+        return node->frequency;
     }
 
     static void load_patricia(Patricia& patricia, int fd)
@@ -53,47 +53,47 @@ namespace common
         return patricia;
     }
 
-    Data get_data_i(const Patricia& patricia, const TrieNode& node, uint8_t child_nb)
+    Data* get_data_i(const Patricia& patricia, uint64_t data_offset, uint8_t child_nb)
     {
-        return *reinterpret_cast<Data*>(
-                patricia.mmap_pointer + node.data_offset + sizeof(Data) * (size_t) child_nb
+        return reinterpret_cast<Data*>(
+                patricia.mmap_pointer + data_offset + sizeof(Data) * (size_t) child_nb
         );
     }
 
-    char* get_chars(const Patricia& patricia, const Data& data)
+    char* get_chars(const Patricia& patricia, uint64_t chars_offset)
     {
-        return patricia.mmap_pointer + data.chars_offset;
+        return patricia.mmap_pointer + chars_offset;
     }
 
-    TrieNode get_child(const Patricia& patricia, const Data& data)
+    TrieNode* get_child(const Patricia& patricia, uint64_t next_node_offset)
     {
-        return *reinterpret_cast<TrieNode*>(
-                patricia.mmap_pointer + data.next_node_offset
+        return reinterpret_cast<TrieNode*>(
+                patricia.mmap_pointer + next_node_offset
         );
     }
 
 
     /* DEBUG */
-    static void patricia_print_dot_aux(const TrieNode& node,
+    static void patricia_print_dot_aux(const TrieNode* node,
                                        const Patricia& patricia, unsigned& nb)
     {
         unsigned i = nb;
         std::string color = end_of_word(node) ? "cyan" : "white";
-        std::string label = node.frequency ? std::to_string(node.frequency) : "";
+        std::string label = node->frequency ? std::to_string(node->frequency) : "";
         std::cout << "    " << nb << " ["
                   << " label=\"" << label << "\""
                   << " fillcolor=\"" << color << "\""
                   << " style=filled"
                   << " ]\n";
-        for (uint8_t child_i = 0; child_i < node.nb_children; ++child_i)
+        for (uint8_t child_i = 0; child_i < node->nb_children; ++child_i)
         {
             ++nb;
-            const Data data = get_data_i(patricia, node, child_i);
-            std::string link_str(get_chars(patricia, data), data.chars_size);
+            const Data* data = get_data_i(patricia, node->data_offset, child_i);
+            std::string link_str(get_chars(patricia, data->chars_offset), data->chars_size);
 
             std::cout << "    " << i << " -> " << nb
                       << " [label  = \"" << link_str << "\"]\n";
-            auto child = get_child(patricia, data);
+            auto child = get_child(patricia, data->next_node_offset);
             patricia_print_dot_aux(child, patricia, nb);
         }
     }
@@ -103,7 +103,7 @@ namespace common
         std::cout << "digraph Trie {\n";
         std::cout << "    node [fontname=\"Arial\"];\n";
 
-        const TrieNode& root = patricia.root;
+        const TrieNode* root = &patricia.root;
         unsigned i = 0;
         patricia_print_dot_aux(root, patricia, i);
 

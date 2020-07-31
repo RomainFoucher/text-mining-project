@@ -26,7 +26,7 @@ namespace app
 
 
     static void
-    recursive_search(const Patricia& p, const TrieNode& node, const std::string& prefix, char ch, char prev_ch,
+    recursive_search(const Patricia& p, const TrieNode* node, const std::string& prefix, char ch, char prev_ch,
                      const std::string& word, const uint8_t* prev_row, const uint8_t* pre_prev_row,
                      std::set<json_data, custom_compare>& results, uint8_t distance, uint8_t len, char* str)
     {
@@ -66,7 +66,7 @@ namespace app
         {
             json_data ret;
             ret.word = prefix;
-            ret.frequency = node.frequency;
+            ret.frequency = node->frequency;
             ret.distance = act_distance;
             results.insert(ret);
         }
@@ -82,13 +82,13 @@ namespace app
             }
             else
             {
-                for (uint8_t i = 0; i < node.nb_children; i++)
+                for (uint8_t i = 0; i < node->nb_children; i++)
                 {
-                    auto dt = get_data_i(p, node, i);
-                    auto chrs = get_chars(p, dt);
+                    auto* dt = get_data_i(p, node->data_offset, i);
+                    auto* chrs = get_chars(p, dt->chars_offset);
                     char new_ch = chrs[0];
-                    const TrieNode& new_nd = get_child(p, dt);
-                    uint8_t new_len = dt.chars_size;
+                    const TrieNode* new_nd = get_child(p, dt->next_node_offset);
+                    uint8_t new_len = dt->chars_size;
                     recursive_search(p, new_nd, prefix + new_ch, new_ch, ch, word, current_row, prev_row, results,
                             distance, new_len, chrs);
 
@@ -107,12 +107,12 @@ namespace app
         uint8_t prev_row[256];
         for (uint8_t i = 0; i < p.root.nb_children; i++)
         {
-            auto dt = get_data_i(p, p.root, i);
-            auto chrs = get_chars(p, dt);
-            const TrieNode& node = get_child(p, dt);
+            auto* dt = get_data_i(p, p.root.data_offset, i);
+            auto* chrs = get_chars(p, dt->chars_offset);
+            const TrieNode* node = get_child(p, dt->next_node_offset);
             char ch = chrs[0];
             std::string prefix(1, ch);
-            uint8_t new_len = dt.chars_size;
+            uint8_t new_len = dt->chars_size;
             recursive_search(p, node, prefix, ch, 0, word, current_row, prev_row, results, distance, new_len, chrs);
         }
         return results;
